@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>视口</title>
+    </head>
+
+    <body>
+        第一行，文档类型定义，该怎么写？？？就忘了！！！ <br>
+        根元素html ,网页语言信息应该在这里使用lang属性定义 <br>
+        文档头 是header 还是head？？？ <br>
+        文档头中使用meta 标签定义网页编码，但怎么定义忘了！！！ <br>
+        再就是新学的，在移动端设备有用的viewport设置： <br>
+        ;&lt;meta name="viewport" content="width=device-width, init-scale=1"> <br>
+        上面一行的意思是，设置网页的宽等于设备屏幕像素的宽，所以如果网页的宽本来与显示网页的屏幕像素的宽 <br>
+        不一致，那么网页就会被缩放；所以后半句设置init-scale=1和前半句的意思是一样的，即通过缩放，使得 <br>
+        网页和屏幕的像素宽（逻辑像素宽）的币值是1。 <br>
+        之所以即设置width又设置init- scale，是为了兼容性。 <br>
+
+        <br>
+        <br>
+        CSS样式中设置的像素称为逻辑像素，在不缩放的前提下，不论在什么屏幕上显示的大小是不变的，与设备无关。<br>
+        对应于设备像素这一概念，设备像素和设备相关，出厂后无法再改变，又叫物理像素，不同设备上，一个逻辑像素对应不同数值的物理像素。 <br>
+
+
+        <br>
+        <br>
+        &lt;!DOCTYPE html> <br>
+        文档头是head不是header！！！ <br>
+        &lt;meta charset="UTF-8"> <br>
+        设置视口的属性值不是init-scale是initial-scale!!! 值是1.0不是1！！！ <br>
+
+    </body>
+
+</html>
