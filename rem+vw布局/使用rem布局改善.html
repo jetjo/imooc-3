@@ -62,19 +62,7 @@
 
             .header-layout,
             .tabbar-layout {
-                /* position: fixed;
-                left: 0;
-                top: 0; */
-
-                /* 流体布局 */
-                /* width: 100%; */
-                width: auto;
-                /* 固定宽高布局 */
-                height: 48px;
-                /* 依次设置了flex-grow,flex-shrink,height;; */
-                /* 即高度即不会因为容器的高度出现剩余空间而拉伸，
-                也不会因为容器高度不够而压缩 */
-                flex: 0 0 48px;
+                flex-shrink: 0;
             }
 
             .tabbar-layout {
@@ -120,10 +108,8 @@
             }
 
             .header .header-logo .header-logo-img {
-                /* 不要同时设置宽高 */
-                height: 30px;
-                /* 临时的高居中 */
-                /* margin-top: 9px; */
+                /* 设计稿上是60px */
+                height: 6rem;
             }
 
 
@@ -137,15 +123,18 @@
 
             .header .header-toggle .header-toggle-bar {
                 display: block;
-                width: 24px;
-                height: 4px;
+                /* width: 24px;
+                height: 4px; */
+                width: 4.8rem;
+                height: .8rem;
                 border-radius: 2px;
                 background-color: #363636;
             }
 
             /* 技巧！！！：设置除第一个之外的样式 */
             .header-toggle-bar+.header-toggle-bar {
-                margin-top: 4px;
+                /* margin-top: 4px; */
+                margin-top: .8rem;
             }
 
         </style>
@@ -155,6 +144,7 @@
             .slider-img {
                 /* 高度自动缩放 */
                 width: 100%;
+                /*或者 width: 75rem; */
             }
 
             .course {
@@ -197,6 +187,9 @@
                 width: 100%;
                 height: 100%;
                 background-color: #fff;
+                /* 可以不变，设计稿上是28px，变得缺点是计算的值有小数，可能有毛刺 */
+                /* 字体图标和文字的尺寸都受到影响 */
+                font-size: 2.8rem;
             }
 
             .tabbar-item {
@@ -218,6 +211,58 @@
             .tabbar-item .iconfont {
                 display: block;
                 font-size: 20px;
+            }
+
+        </style>
+
+        <!-- 消除root字体变化的影响 -->
+        <style>
+            body {
+                font-size: 10px;
+            }
+
+            .header,
+            .main-layout,
+            .tabbar-layout {
+                /* 由于使用rem布局时，body的font-size需要根据视口宽度动态变化
+                                为了不影响页面字体，需要在此级处设置font-size */
+                font-size: 16px;
+            }
+
+        </style>
+
+        <script>
+            // 防止污染全局上下文
+            {
+                const docEI = document.documentElement;
+
+                const setHtmlFontSize = () =>
+                {
+                    const viewWidth = docEI.clientWidth;
+                    //UI设计稿的屏幕宽度是750px的，
+                    //此项目编码实现时，假设css样式里，body的font-size的值设置的是10px，
+                    //那么有此等式：(编码人员CSS样式中写的body的font-size)10px / (ui设计人员设计的屏幕宽)750px = 
+                    // 实际运行项目时页面的body的font-size / (实际运行项目时某屏幕的像素宽)viewWidth
+                    //所以有：
+                    docEI.style.fontSize = `${ 10 * viewWidth / 750 }px`;
+                }
+
+                // 页面加载和刷新时执行
+                setHtmlFontSize();
+
+                // 窗口尺寸变化时执行
+                window.addEventListener('resize', () => setHtmlFontSize(), false);
+            }
+        </script>
+
+        <!-- 头部样式，底部导航栏，使用REM实现等宽高比缩放 -->
+        <style>
+            .header-layout,
+            .tabbar-layout {
+                width: 100%;
+                /* 或者width: 75rem; */
+                /* 由设计稿的96px/body的font-size得来 */
+                height: 9.6rem;
             }
 
         </style>
