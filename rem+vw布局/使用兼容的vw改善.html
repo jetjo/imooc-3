@@ -218,7 +218,7 @@
         <!-- 消除root字体变化的影响 -->
         <style>
             body {
-                font-size: 10px;
+                /* font-size: 10px; */
             }
 
             .header,
@@ -232,28 +232,45 @@
         </style>
 
         <script>
-            // 防止污染全局上下文
-            {
-                const docEI = document.documentElement;
+            // 调整CSS是CSS引擎的指责，网页性能优化的原则就是各司其职，
+            // 使用js调整CSS，即需要js引擎，有需要操作DOM, 势必占用js性能，
+            // 所以选择使用vw做单位设置body的字号，这样不用写js代码，就能实现body
+            // font-size随视口宽度变化而变化
+            // // 防止污染全局上下文
+            // {
+            //     const docEI = document.documentElement;
 
-                const setHtmlFontSize = () =>
-                {
-                    const viewWidth = docEI.clientWidth;
-                    //UI设计稿的屏幕宽度是750px的，
-                    //此项目编码实现时，假设css样式里，body的font-size的值设置的是10px，
-                    //那么有此等式：(编码人员CSS样式中写的body的font-size)10px / (ui设计人员设计的屏幕宽)750px =
-                    // 实际运行项目时页面的body的font-size / (实际运行项目时某屏幕的像素宽)viewWidth
-                    //所以有：
-                    docEI.style.fontSize = `${ 10 * viewWidth / 750 }px`;
-                }
+            //     const setHtmlFontSize = () =>
+            //     {
+            //         const viewWidth = docEI.clientWidth;
+            //         //UI设计稿的屏幕宽度是750px的，
+            //         //此项目编码实现时，假设css样式里，body的font-size的值设置的是10px，
+            //         //那么有此等式：(编码人员CSS样式中写的body的font-size)10px / (ui设计人员设计的屏幕宽)750px =
+            //         // 实际运行项目时页面的body的font-size / (实际运行项目时某屏幕的像素宽)viewWidth
+            //         //所以有：
+            //         docEI.style.fontSize = `${ 10 * viewWidth / 750 }px`;
+            //     }
 
-                // 页面加载和刷新时执行
-                setHtmlFontSize();
+            //     // 页面加载和刷新时执行
+            //     setHtmlFontSize();
 
-                // 窗口尺寸变化时执行
-                window.addEventListener('resize', () => setHtmlFontSize(), false);
-            }
+            //     // 窗口尺寸变化时执行
+            //     window.addEventListener('resize', () => setHtmlFontSize(), false);
+            // }
         </script>
+        <style>
+            body {
+                /* 设计稿的屏幕宽度是750px，编码时，计划设置body的font-size为10px,
+                750px是屏幕宽度，对应100vw，那么10px对应多少vw呢？ */
+                font-size: 1.333333vw;
+            }
+
+            /* 经过测试，，，rem参考的基准字体尺寸是html的，不是body的！！！！ */
+            html {
+                font-size: 1.333333vw;
+            }
+
+        </style>
 
         <!-- 头部样式，底部导航栏，使用REM实现等宽高比缩放 -->
         <style>
