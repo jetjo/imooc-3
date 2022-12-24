@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>使用响应式布局</title>
+        <title>使用响应式布局实现rem布局</title>
         <link rel="stylesheet" href="../icons/iconfont.css">
 
         <!-- 初始化样式 -->
@@ -210,7 +210,8 @@
 
             .tabbar-item .iconfont {
                 display: block;
-                font-size: 20px;
+                /* font-size: 20px; */
+                font-size: 5.5rem;
             }
 
         </style>
@@ -232,28 +233,85 @@
         </style>
 
         <script>
-            // 防止污染全局上下文
-            {
-                const docEI = document.documentElement;
+            // // 防止污染全局上下文
+            // {
+            //     const docEI = document.documentElement;
 
-                const setHtmlFontSize = () =>
-                {
-                    const viewWidth = docEI.clientWidth;
-                    //UI设计稿的屏幕宽度是750px的，
-                    //此项目编码实现时，假设css样式里，body的font-size的值设置的是10px，
-                    //那么有此等式：(编码人员CSS样式中写的body的font-size)10px / (ui设计人员设计的屏幕宽)750px = 
-                    // 实际运行项目时页面的body的font-size / (实际运行项目时某屏幕的像素宽)viewWidth
-                    //所以有：
-                    docEI.style.fontSize = `${ 10 * viewWidth / 750 }px`;
+            //     const setHtmlFontSize = () =>
+            //     {
+            //         const viewWidth = docEI.clientWidth;
+            //         //UI设计稿的屏幕宽度是750px的，
+            //         //此项目编码实现时，假设css样式里，body的font-size的值设置的是10px，
+            //         //那么有此等式：(编码人员CSS样式中写的body的font-size)10px / (ui设计人员设计的屏幕宽)750px =
+            //         // 实际运行项目时页面的body的font-size / (实际运行项目时某屏幕的像素宽)viewWidth
+            //         //所以有：
+            //         docEI.style.fontSize = `${ 10 * viewWidth / 750 }px`;
+            //     }
+
+            //     // 页面加载和刷新时执行
+            //     setHtmlFontSize();
+
+            //     // 窗口尺寸变化时执行
+            //     window.addEventListener('resize', () => setHtmlFontSize(), false);
+            // }
+        </script>
+        <style>
+            /* 断点：320px 414px 540px 768px 992px 1200px */
+            /* 1、在320px一下的范围内选一个好计算的屏幕宽度， 300px
+            ，有以下关系： 300px/html font-size = 750px / 10px */
+            html {
+                font-size: 4px;
+            }
+
+            @media screen and (min-width: 320px) {
+                html {
+                    font-size: 5px;
+                }
+            }
+
+            @media screen and (min-width: 414px) {
+                html {
+                    font-size: 6px;
+                }
+            }
+
+            @media screen and (min-width: 540px) {
+                html {
+                    font-size: 8px;
                 }
 
-                // 页面加载和刷新时执行
-                setHtmlFontSize();
-
-                // 窗口尺寸变化时执行
-                window.addEventListener('resize', () => setHtmlFontSize(), false);
+                .tabbar {
+                    font-size: 16px;
+                }
             }
-        </script>
+
+            @media screen and (min-width: 768px) {
+                html {
+                    font-size: 11px;
+                }
+
+                .tabbar {
+                    font-size: 20px;
+                }
+            }
+
+            @media screen and (min-width: 992px) {
+                html {
+                    font-size: 14px;
+                }
+            }
+
+            @media screen and (min-width: 1200px) {
+                html {
+                    font-size: 18px;
+                }
+
+                .tabbar {
+                    font-size: 24px;
+                }
+            }
+
+        </style>
 
         <!-- 头部样式，底部导航栏，使用REM实现等宽高比缩放 -->
         <style>
