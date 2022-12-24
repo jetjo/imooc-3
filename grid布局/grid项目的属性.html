@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Grid 项目的属性</title>
+        <link rel="stylesheet" href="./课件资料/Grid 项目的属性/grid.css" />
+        <style>
+            img {
+                height: 300px;
+                width: auto;
+            }
+
+        </style>
+        <style>
+            /* 1.grid-column-start, grid-column-end, 
+            grid-row-start, grid-row-end 属性 */
+            .container {
+                display: grid;
+                grid-template-columns: [c1] 50px [c2] 50px [c3] 50px [c4];
+                grid-template-rows: [r1] 50px [r2] 50px [r3] 50px [r4];
+            }
+
+            .grid-1-1 .item-1 {
+                /* number */
+                /* grid-column-start: 1;
+                grid-column-end: 3; */
+                grid-row-start: 1;
+                grid-row-end: 3;
+                /* 项目编号也可以是负数, 列是从右到左，行是从下到上 */
+                grid-column-start: -1;
+                grid-column-end: -3;
+            }
+
+            .grid-1-1 .item-2 {
+                /* 项目可以重叠！！！ */
+                grid-column-start: 2;
+                grid-column-end: 4;
+                grid-row-start: 2;
+                grid-row-end: 3;
+
+                /* 但可以使用z-index控制层叠顺序 */
+                /* z-index: -1; */
+            }
+
+            .grid-1-2 {
+                grid-template-areas:
+                    'header1 header header3'
+                    'nav main sidebar'
+                    'footer footer footer';
+            }
+
+            .grid-1-2 .item-1 {
+                /* name */
+                grid-column-start: header-end;
+                grid-column-end: c4;
+                /* grid-row-start: r2;
+                grid-row-end: r3; */
+                /* grid-row-start: header1-end; */
+                /* grid-row-start: header-end; */
+                grid-row-start: header-start;
+                grid-row-end: sidebar-end;
+            }
+
+            .grid-1-3 .item-1 {
+                /* span number: 跨越几个网格 */
+                grid-row-start: span 2;
+                grid-row-end: span 3;
+            }
+
+            /* 2.grid-column, grid-row 属性 */
+            .grid-2 .item-1 {
+                /* grid-column-start: 2;
+                grid-column-end: 4;
+                grid-row-start: 2;
+                grid-row-end: 3; */
+                /* 相当于 */
+                grid-column: 2/4;
+                grid-row: 2/3;
+                /* 斜杠以及后面的部分可以省略，这样是， 默认以跨
+                越1个span为止 */
+                grid-column: 2;
+                /* 相当于 */
+                grid-column: 2/ span 1;
+            }
+
+            /* 3.grid-area 属性 */
+            .grid-3-1 {
+                grid-template-areas:
+                    'header1 header3 header3'
+                    'nav main sidebar'
+                    'footer footer footer';
+            }
+
+            .grid-3-1 .item-1 {
+                grid-area: header3;
+            }
+
+            .grid-3-2 .item-1 {
+                /* grid-row-start/grid-column-start
+                /grid-row-end/grid-column-end */
+                /* 注意顺序 */
+                grid-area: 2/2/3/3;
+            }
+
+            /* 4.align-self, justify-self, place-self 属性 */
+            .grid-4 {
+                grid-template-rows: repeat(3, 100px);
+                grid-template-columns: repeat(3, 100px);
+
+            }
+
+            .grid-4 .item {
+                font-size: 30px;
+            }
+
+            .grid-4-1 .item-1 {
+                /* 默认值stretch */
+                /* width: 50px;
+                height: 50px; */
+                place-self: stretch;
+            }
+
+            .grid-4-1 .item-4 {}
+
+            .grid-4-2 .item-1 {
+                align-self: start;
+            }
+
+            .grid-4-2 .item-4 {
+                justify-self: start;
+            }
+
+            .grid-4-2 .item-5 {
+                place-self: start;
+            }
+
+            .grid-4-3 .item-1 {
+                align-self: end;
+            }
+
+            .grid-4-3 .item-4 {
+                justify-self: end;
+            }
+
+            .grid-4-3 .item-5 {
+                place-self: end;
+            }
+
+            .grid-4-4 .item-1 {
+                align-self: center;
+            }
+
+            .grid-4-4 .item-4 {
+                justify-self: center;
+            }
+
+            .grid-4-4 .item-5 {
+                place-self: center;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <!-- <img src="./课件资料/Grid 项目的属性/grid.png" alt="grid" />
+        <img src="./课件资料/Grid 项目的属性/grid-line.png" alt="grid line" /> -->
+
+        <!-- 1.grid-column-start/grid-columnend/
+            grid-row-start/grid-row-end 属性 -->
+        <div>
+            <h2>
+                1.grid-column-start属性, <br>
+                grid-column-end属性, <br>
+                grid-row-start属性, <br>
+                grid-row-end属性
+            </h2>
+            <h3>指定项目的位置</h3>
+            <h4>grid-column-start: number | name | span number</h4>
+            <h4>grid-column-end: number | name | span number </h4>
+            <h4>grid-row-start: number | name | span number</h4>
+            <h4>grid-row-end: number | name | span number </h4>
+
+            <p>number: 数字， 从第几根网格线开始，到第几根网格线结束</p>
+            <div class="container grid-1-1">
+                <div class="item item-1">1</div>
+                <div class="item item-2">2</div>
+                <div class="item item-3">3</div>
+                <div class="item item-4">4</div>
+                <div class="item item-5">5</div>
+                <div class="item item-6">6</div>
+                <div class="item item-7">7</div>
+                <div class="item item-8">8</div>
+                <div class="item item-9">9</div>
+            </div>
+
+            <p>name: 通过网格线的名字来指定网格线</p>
+            <div class="container grid-1-2">
+                <div class="item item-1">1</div>
+                <div class="item item-2">2</div>
+                <div class="item item-3">3</div>
+                <div class="item item-4">4</div>
+                <div class="item item-5">5</div>
+                <div class="item item-6">6</div>
+                <div class="item item-7">7</div>
+                <div class="item item-8">8</div>
+                <div class="item item-9">9</div>
+            </div>
+
+            <p>span: 用于gird-row/column-start, 指定占用的网格数量</p>
+            <div class="container grid-1-3">
+                <div class="item item-1">1</div>
+                <div class="item item-2">2</div>
+                <div class="item item-3">3</div>
+                <div class="item item-4">4</div>
+                <div class="item item-5">5</div>
+                <div class="item item-6">6</div>
+                <div class="item item-7">7</div>
+                <div class="item item-8">8</div>
+                <div class="item item-9">9</div>
+            </div>
+        </div>
+
+        <!-- 2.grid-column, grid-row 属性 -->
+        <div>
+            <h2>
+                2.grid-column属性, <br>
+                grid-row属性
+            </h2>
+            <h3>
+                grid-column: grid-column-start和 grid-column-end的合并简写
+                <br />
+                grid-row: grid-row-start和grid-row-end的合并简写
+            </h3>
+            <h4>
+                grid-column: grid-column-start / grid-column-end
+                <br />
+                grid-row: grid-row-start / grid-row-end
+            </h4>
+
+            <div class="container grid-2">
+                <div class="item item-1">1</div>
+                <div class="item item-2">2</div>
+                <div class="item item-3">3</div>
+                <div class="item item-4">4</div>
+                <div class="item item-5">5</div>
+                <div class="item item-6">6</div>
+                <div class="item item-7">7</div>
+                <div class="item item-8">8</div>
+                <div class="item item-9">9</div>
+            </div>
+        </div>
+
+        <!-- 3.grid-area 属性 -->
+        <div>
+            <h2>3.grid-area 属性</h2>
+            <h3>
+                指定项目在哪个区域
+                <br />
+                ，是grid-row-start/grid-column-start/grid-row-end/grid-column-end的另一种简写形式
+            </h3>
+            <h4>
+                grid-area: 区域名;
+            </h4>
+            <h4>
+                grid-area: grid-row-start/grid-column-start/grid-row-end/grid-column-end
+            </h4>
+
+            <p>区域名： 指定放在哪一个区域</p>
+            <div class="container grid-3-1">
+                <div class="item item-1">1</div>
+                <div class="item item-2">2</div>
+                <div class="item item-3">3</div>
+                <div class="item item-4">4</div>
+                <div class="item item-5">5</div>
+                <div class="item item-6">6</div>
+                <div class="item item-7">7</div>
+                <div class="item item-8">8</div>
+                <div class="item item-9">9</div>
+            </div>
+
+            <p>grid-row-start/grid-column-start/grid-row-end/grid-column-end</p>
+            <div class="container grid-3-2">
+                <div class="item item-1">1</div>
+                <div class="item item-2">2</div>
+                <div class="item item-3">3</div>
+                <div class="item item-4">4</div>
+                <div class="item item-5">5</div>
+                <div class="item item-6">6</div>
+                <div class="item item-7">7</div>
+                <div class="item item-8">8</div>
+                <div class="item item-9">9</div>
+            </div>
+        </div>
+
+        <!-- 4.align-self, justify-self, place-self 属性 -->
+        <div>
+            <h2>
+                4.align-self 属性, <br>
+                justify-self 属性, <br>
+                place-self 属性
+            </h2>
+            <h3>
+                align-self: 设置某一个项目相对于自己网格垂直方向的对齐方式（上中下），跟align-items的用法一致， <br>
+                单只作用于一个项目
+                <br />
+                justify-self: 设置项目的水平对齐方式（左中右），跟justify-items用法一致，作用类似，但只作用于单个项目
+                <br />
+                place-selft: align-selft、justify-self的合并简写形式
+            </h3>
+            <h4>
+                align-self: stretch(默认值) | start | end | center
+            </h4>
+            <h4>
+                justify-self: stretch(默认值) | start | end | center
+            </h4>
+            <h4>
+                place-self: align-self justify-self
+            </h4>
+
+            <p>stretch: 默认值，拉伸，占满单元格的整个宽高</p>
+            <div class="container grid-4 grid-4-1">
+                <div class="item item-1">1</div>
+                <div class="item item-2">2</div>
+                <div class="item item-3">3</div>
+                <div class="item item-4">4</div>
+                <div class="item item-5">5</div>
+                <div class="item item-6">6</div>
+                <div class="item item-7">7</div>
+                <div class="item item-8">8</div>
+                <div class="item item-9">9</div>
+            </div>
+
+            <p>start: 对齐单元格的起始边缘</p>
+            <div class="container grid-4 grid-4-2">
+                <div class="item item-1">1</div>
+                <div class="item item-2">2</div>
+                <div class="item item-3">3</div>
+                <div class="item item-4">4</div>
+                <div class="item item-5">5</div>
+                <div class="item item-6">6</div>
+                <div class="item item-7">7</div>
+                <div class="item item-8">8</div>
+                <div class="item item-9">9</div>
+            </div>
+
+            <p>end: 对齐单元格的结束边缘</p>
+            <div class="container grid-4 grid-4-3">
+                <div class="item item-1">1</div>
+                <div class="item item-2">2</div>
+                <div class="item item-3">3</div>
+                <div class="item item-4">4</div>
+                <div class="item item-5">5</div>
+                <div class="item item-6">6</div>
+                <div class="item item-7">7</div>
+                <div class="item item-8">8</div>
+                <div class="item item-9">9</div>
+            </div>
+
+            <p>center: 单元格内部居中</p>
+            <div class="container grid-4 grid-4-4">
+                <div class="item item-1">1</div>
+                <div class="item item-2">2</div>
+                <div class="item item-3">3</div>
+                <div class="item item-4">4</div>
+                <div class="item item-5">5</div>
+                <div class="item item-6">6</div>
+                <div class="item item-7">7</div>
+                <div class="item item-8">8</div>
+                <div class="item item-9">9</div>
+            </div>
+        </div>
+    </body>
+
+</html>
