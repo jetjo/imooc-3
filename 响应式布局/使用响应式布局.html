@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>使用响应式布局</title>
+        <!-- TODO:引入样式 -->
+        <link rel="stylesheet" href="../icons/iconfont.css">
+        <link rel="stylesheet" href="../css//reset.css">
+
+        <!-- 整体布局 -->
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+            }
+
+            .header-layout {
+                /* 配合.nav-layout的绝对定位 */
+                position: relative;
+                flex-shrink: 0;
+                width: 100%;
+                height: 48px;
+                border-bottom: 1px solid #e8e8e8;
+            }
+
+            .nav-layout {
+                /* 配合height：0；实现隐藏效果 */
+                overflow: hidden;
+                position: absolute;
+                top: 48px;
+                left: 0;
+                width: 100%;
+                height: 0;
+                background-color: #fff;
+                transition: height 0.5s;
+            }
+
+            /* nav-layout-展开 */
+            .nav-layout-extended {
+                height: 200px;
+            }
+
+
+            .main-layout {
+                overflow: auto;
+                flex-grow: 1;
+            }
+
+            .slider-layout {
+                margin-bottom: 20px;
+            }
+
+            .course-layout {
+                margin-bottom: 10px;
+            }
+
+            .tabbar-layout {
+                flex-shrink: 0;
+
+                width: 100%;
+                height: 48px;
+                box-shadow: 0 -4px 4px rgba(0, 0, 0, 0.15);
+            }
+
+        </style>
+
+        <!-- 头部布局 -->
+        <style>
+            /* header */
+            .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                width: 100%;
+                height: 100%;
+                padding: 0 20px;
+                background-color: #fff;
+            }
+
+            .header-logo-img {
+                /* 不要同时设置宽高，要让图片等比例缩放 */
+                height: 30px;
+            }
+
+            .header-toggle {
+                padding: 10px;
+                background-color: transparent;
+                border: none;
+                border-radius: 4px;
+            }
+
+            .header-toggle-bar {
+                display: block;
+                width: 24px;
+                height: 4px;
+                background-color: #363636;
+                border-radius: 2px;
+            }
+
+            .header-toggle-bar+.header-toggle-bar {
+                margin-top: 4px;
+            }
+
+            .header-toggle-active {
+                background-color: #f1f1f1;
+            }
+
+            .header-toggle-active .header-toggle-bar {
+                background-color: #1428a0;
+            }
+
+            /* nav */
+            .nav-list {
+                background-color: #fff;
+            }
+
+            .nav-link {
+                display: block;
+                height: 40px;
+                line-height: 40px;
+                padding: 0 20px;
+                color: #363636;
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+            .nav-link:hover {
+                color: #1428a0;
+            }
+
+        </style>
+
+        <!-- 主体布局 -->
+        <style>
+            /* slider */
+            .slider-layout img {
+                width: 100%;
+            }
+
+            /* course */
+            .course {
+                font-size: 14px;
+            }
+
+            .course-title {
+                width: 100%;
+                padding: 0 0 10px 20px;
+                color: #191919;
+                font-size: 16px;
+            }
+
+            .course-list {
+                display: flex;
+                flex-wrap: wrap;
+                padding-right: 20px;
+            }
+
+            .course-item {
+                width: 50%;
+                padding: 0 0 10px 20px;
+            }
+
+            .course-pic {
+                margin-bottom: 6px;
+            }
+
+            .course-img {
+                width: 100%;
+            }
+
+            .course-price {
+                color: #e93b3b;
+            }
+
+            .course-name {
+                height: 40px;
+                line-height: 20px;
+                margin-bottom: 4px;
+                color: #333;
+
+                /* 多行文字省略 */
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                white-space: normal !important;
+                word-wrap: break-word;
+            }
+
+        </style>
+
+        <!-- 底部布局 -->
+        <style>
+            /* tabbar */
+            .tabbar {
+                display: flex;
+
+                height: 100%;
+                background-color: #f6f6f6;
+                font-size: 14px;
+            }
+
+            .tabbar-item {
+                flex-grow: 1;
+
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                color: #c2cfcc;
+            }
+
+            .tabbar-item-active {
+                background-color: #e7f3f0;
+                color: #00b38a;
+            }
+
+            .tabbar-item .iconfont {
+                font-size: 20px;
+            }
+
+        </style>
+
+        <!-- 响应式布局 -->
+        <style>
+            /* 断点：576px 768px 992px 1200px */
+            .course-item {
+                width: 100%;
+            }
+
+            @media screen and (min-width: 576px) {
+                .course-item {
+                    width: 50%;
+                }
+            }
+
+            @media screen and (min-width: 768px) {
+                .course-item {
+                    width: 33.333333%;
+                }
+
+                .header-toggle {
+                    display: none;
+                }
+
+                .nav-layout {
+                    position: static;
+                    height: auto;
+                }
+
+                .nav-list {
+                    display: flex;
+                    justify-content: flex-end;
+                }
+            }
+
+            @media screen and (min-width: 992px) {
+                .course-item {
+                    width: 25%;
+                }
+            }
+
+            @media screen and (min-width: 1200px) {
+                .course-item {
+                    width: 16.666667%;
+                }
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <!-- 头部 -->
+        <header class="header-layout">
+            <div class="header">
+                <a href="./使用响应式布局.html" class="header-logo">
+                    <img src="../images/logo.png" alt="" class="header-logo-img">
+                </a>
+
+                <button type="button" id="header-toggle" class="header-toggle">
+                    <span class="header-toggle-bar"></span>
+                    <span class="header-toggle-bar"></span>
+                    <span class="header-toggle-bar"></span>
+                </button>
+
+                <!-- 导航 -->
+                <nav id="nav" class="nav-layout">
+                    <ul class="nav-list">
+                        <li><a href="./使用响应式布局.html" class="nav-link">首页</a></li>
+                        <li><a href="javascript:;" class="nav-link">免费课程</a></li>
+                        <li><a href="javascript:;" class="nav-link">实战课程&amp;金职位</a></li>
+                        <li><a href="javascript:;" class="nav-link">专栏/手记/猿问</a></li>
+                        <li><a href="javascript:;" class="nav-link">幕课教程</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <!-- 主体部分 -->
+        <div class="main-layout">
+            <!-- 幻灯片 -->
+            <div class="slider-layout"><img src="../images/slider/1.jpg" alt=""></div>
+            <!-- 免费课程 -->
+            <div class="course-layout">
+                <div class="course">
+                    <h2 class="course-title">免费课程</h2>
+                    <ul class="course-list">
+                        <li class="course-item">
+                            <a href="javascript:;">
+                                <p class="course-pic"><img src="../images/course_free/1.jpg" alt="" class="course-img">
+                                </p>
+                                <p class="course-name">初识 HTML(5) + CSS(3) - 2020升级版</p>
+                                <p class="course-price">
+                                    <strong>免费</strong>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="course-item">
+                            <a href="javascript:;">
+                                <p class="course-pic">
+                                    <img src="../images/course_free/2.jpg" class="course-img" />
+                                </p>
+                                <p class="course-name">
+                                    Java 入门第一课（IDEA 工具）2020 升级版
+                                </p>
+                                <p class="course-price">
+                                    <strong>免费</strong>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="course-item">
+                            <a href="javascript:;">
+                                <p class="course-pic">
+                                    <img src="../images/course_free/3.jpg" class="course-img" />
+                                </p>
+                                <p class="course-name">Linux C 语言编程基本原理与实践</p>
+                                <p class="course-price">
+                                    <strong>免费</strong>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="course-item">
+                            <a href="javascript:;">
+                                <p class="course-pic">
+                                    <img src="../images/course_free/4.jpg" class="course-img" />
+                                </p>
+                                <p class="course-name">
+                                    炫丽的倒计时效果 Canvas 绘图与动画基础
+                                </p>
+                                <p class="course-price">
+                                    <strong>免费</strong>
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 实战课程 -->
+            <div class="course-layout">
+                <div class="course">
+                    <h2 class="course-title">实战课程</h2>
+                    <ul class="course-list">
+                        <li class="course-item">
+                            <a href="javascript:;">
+                                <p class="course-pic">
+                                    <img src="../images/course_coding/1.jpg" class="course-img" />
+                                </p>
+                                <p class="course-name">
+                                    Go微服务入门到容器化实践，落地可观测的微服务电商项目
+                                </p>
+                                <p class="course-price">
+                                    <strong>¥328</strong>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="course-item">
+                            <a href="javascript:;">
+                                <p class="course-pic">
+                                    <img src="../images/course_coding/2.jpg" class="course-img" />
+                                </p>
+                                <p class="course-name">
+                                    Redis 专项进阶课 解决 Redis 工作实际问题 + 掌握Redis6.x 特性
+                                </p>
+                                <p class="course-price">
+                                    <strong>¥298</strong>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="course-item">
+                            <a href="javascript:;">
+                                <p class="course-pic">
+                                    <img src="../images/course_coding/3.jpg" class="course-img" />
+                                </p>
+                                <p class="course-name">
+                                    体系课-数据可视化入门到精通-打造前端差异化竞争力
+                                </p>
+                                <p class="course-price">
+                                    <strong>¥848</strong>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="course-item">
+                            <a href="javascript:;">
+                                <p class="course-pic">
+                                    <img src="../images/course_coding/4.png" class="course-img" />
+                                </p>
+                                <p class="course-name">
+                                    一天时间迅速准备前端面试 快速构建初级前端知识体系
+                                </p>
+                                <p class="course-price">
+                                    <strong>¥299</strong>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="course-item">
+                            <a href="javascript:;">
+                                <p class="course-pic">
+                                    <img src="../images/course_coding/5.png" class="course-img" />
+                                </p>
+                                <p class="course-name">
+                                    PyTorch 入门到进阶 实战计算机视觉与自然语言处理项目
+                                </p>
+                                <p class="course-price">
+                                    <strong>¥499</strong>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="course-item">
+                            <a href="javascript:;">
+                                <p class="course-pic">
+                                    <img src="../images/course_coding/6.png" class="course-img" />
+                                </p>
+                                <p class="course-name">
+                                    Vue3.0(正式版) + TS 仿知乎专栏企业级项目 深度剖析 Vue3 新特性
+                                </p>
+                                <p class="course-price">
+                                    <strong>¥348</strong>
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- 标签栏 -->
+        <div class="tabbar-layout">
+            <div class="tabbar">
+                <a href="./使用响应式布局.html" class="tabbar-item tabbar-item-active">
+                    <i class="iconfont icon-home"></i>
+                    <span>首页</span>
+                </a>
+                <a href="javascript:;" class="tabbar-item"><i class="iconfont icon-search"></i> <span>搜索</span></a>
+                <a href="javascript:;" class="tabbar-item"><i class="iconfont icon-personal"></i> <span>我的</span></a>
+            </div>
+        </div>
+
+        <script>
+            // 点击切换按钮， 展开或收起导航菜单
+            {
+                const $toggleBtn = document.getElementById('header-toggle');
+                const $nav = document.getElementById('nav');
+                const navExtendedClassName = 'nav-layout-extended';
+                const toggleBtnExtendedClassName = 'header-toggle-active';
+
+                $toggleBtn.addEventListener('click', function ()
+                {
+                    this.classList.toggle(toggleBtnExtendedClassName);
+                    $nav.classList.toggle(navExtendedClassName);
+                }, false);
+            }
+        </script>
+    </body>
+
+</html>

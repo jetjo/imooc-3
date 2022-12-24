@@ -1,0 +1,27 @@
+/* tabbar */
+.tabbar {
+  display: flex;
+
+  height: 100%;
+  background-color: #f6f6f6;
+  font-size: 14px;
+}
+
+.tabbar-item {
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  color: #c2cfcc;
+}
+.tabbar-item-active {
+  background-color: #e7f3f0;
+  color: #00b38a;
+}
+
+.tabbar-item .iconfont {
+  font-size: 20px;
+}
