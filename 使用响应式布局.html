@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>使用响应式布局</title>
+        <link rel="stylesheet" href="../icons/iconfont.css">
+
+        <!-- 初始化样式 -->
+        <style>
+            /* css reset */
+            * {
+                /* 移动端常用 */
+                box-sizing: border-box;
+                padding: 0;
+                margin: 0;
+
+                outline: 0;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            a {
+                text-decoration: none;
+            }
+
+            ul,
+            li {
+                list-style: none;
+            }
+
+            img {
+                /* 使得图片在撑开一个没有指定高的块容器时，不在容器底部留有空隙，图片的高正好是容器高 */
+                vertical-align: top;
+            }
+
+        </style>
+
+        <!-- 整体布局样式 改造-->
+        <style>
+            body {
+                /* flex容器仍然是块元素，宽会自动撑满 */
+                /* width: 100vw; */
+                height: 100vh;
+                display: flex;
+                /* flex-direction和flex-wrap的简写 */
+                flex-flow: column nowrap;
+                /* 要撑满容器的高，所以设置什么无所谓，保持默认 */
+                justify-content: flex-start;
+                /* 沿交叉轴（即横向）方向上，子元素的对齐方式，
+                设置为stretch的情况下，只要子元素的宽是auto,则会自动拉伸充满
+                flex盒子的交叉轴空间，即宽度。 */
+                align-items: stretch;
+                /* 子元素会撑满父容器的宽，flex-wrap又是nowrap,不会换行，就
+                不会出现多条主轴，所以多条主轴的空间之间的对齐方式，设置什么无所谓 */
+                /* 在此处，主轴是纵向的，所以指的是换列的情况下，多列之间的对齐方式 */
+                align-content: flex-start;
+
+                /* overflow: hidden; */
+            }
+
+            .header-layout,
+            .tabbar-layout {
+                flex-shrink: 0;
+            }
+
+            .tabbar-layout {
+                /* top: auto;
+                bottom: 0; */
+                /* 不妨尝试将 display 设为除 block 之外的某个值。 */
+                /* 实际有效果，但不知为何有上面的警告 */
+                order: 2;
+            }
+
+            .main-layout {
+                order: 1;
+                /* padding: 48px 0; */
+                flex: 1 1 auto;
+                /* 不写的话，当子元素的高之和大于父元素时，父元素并没有
+                将设置了flex-shrink不为0的元素进行压缩，而是出现
+                滚动条，导致排在后面的子元素不滚动的话不可见 */
+                /* 所以flex-shrink要配合overflow来用！！！！！！！！！！！！！！！！ */
+                overflow: auto;
+            }
+
+        </style>
+
+        <!-- 头部样式 -->
+        <style>
+            .header {
+                width: 100%;
+                height: 100%;
+                padding: 0 20px;
+
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .header .header-logo {
+                /* float: left; */
+                /* 与其它flex-item达成垂直居中的方式1 */
+                /* display: flex;
+                align-items: center; */
+                /* 与其它flex-item达成垂直居中的方式2 */
+                /* height: 100%; */
+            }
+
+            .header .header-logo .header-logo-img {
+                /* 设计稿上是60px */
+                height: 6rem;
+            }
+
+
+            .header .header-toggle {
+                /* float: right; */
+                padding: 10px;
+                border: none;
+                border-radius: 4px;
+                /* margin-top: 4px; */
+            }
+
+            .header .header-toggle .header-toggle-bar {
+                display: block;
+                /* width: 24px;
+                height: 4px; */
+                width: 4.8rem;
+                height: .8rem;
+                border-radius: 2px;
+                background-color: #363636;
+            }
+
+            /* 技巧！！！：设置除第一个之外的样式 */
+            .header-toggle-bar+.header-toggle-bar {
+                /* margin-top: 4px; */
+                margin-top: .8rem;
+            }
+
+        </style>
+
+        <!-- 主体样式 -->
+        <style>
+            .slider-img {
+                /* 高度自动缩放 */
+                width: 100%;
+                /*或者 width: 75rem; */
+            }
+
+            .course {
+                /* 因为.course-list ,所以要清除浮动 */
+                overflow: auto;
+            }
+
+            .course-list {
+                padding-right: 20px;
+            }
+
+            .course-item {
+                float: left;
+                width: 50%;
+                padding: 0 0 10px 20px;
+            }
+
+            .course-img {
+                width: 100%;
+            }
+
+            .course-name {
+                height: 40px;
+                line-height: 20px;
+
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                white-space: normal !important;
+                word-wrap: break-word;
+            }
+
+        </style>
+
+        <!-- 底部导航栏 -->
+        <style>
+            .tabbar {
+                width: 100%;
+                height: 100%;
+                background-color: #fff;
+                /* 可以不变，设计稿上是28px，变得缺点是计算的值有小数，可能有毛刺 */
+                /* 字体图标和文字的尺寸都受到影响 */
+                font-size: 2.8rem;
+            }
+
+            .tabbar-item {
+                float: left;
+                width: 33.3333%;
+                height: 100%;
+                background-color: transparent;
+                color: #c2cfcc;
+
+                text-align: center;
+                padding-top: 3px;
+            }
+
+            .tabbar-item-active {
+                background-color: #e7f3f0;
+                color: #00b38a;
+            }
+
+            .tabbar-item .iconfont {
+                display: block;
+                font-size: 20px;
+            }
+
+        </style>
+
+        <!-- 消除root字体变化的影响 -->
+        <style>
+            body {
+                font-size: 10px;
+            }
+
+            .header,
+            .main-layout,
+            .tabbar-layout {
+                /* 由于使用rem布局时，body的font-size需要根据视口宽度动态变化
+                                为了不影响页面字体，需要在此级处设置font-size */
+                font-size: 16px;
+            }
+
+        </style>
+
+        <script>
+            // 防止污染全局上下文
+            {
+                const docEI = document.documentElement;
+
+                const setHtmlFontSize = () =>
+                {
+                    const viewWidth = docEI.clientWidth;
+                    //UI设计稿的屏幕宽度是750px的，
+                    //此项目编码实现时，假设css样式里，body的font-size的值设置的是10px，
+                    //那么有此等式：(编码人员CSS样式中写的body的font-size)10px / (ui设计人员设计的屏幕宽)750px = 
+                    // 实际运行项目时页面的body的font-size / (实际运行项目时某屏幕的像素宽)viewWidth
+                    //所以有：
+                    docEI.style.fontSize = `${ 10 * viewWidth / 750 }px`;
+                }
+
+                // 页面加载和刷新时执行
+                setHtmlFontSize();
+
+                // 窗口尺寸变化时执行
+                window.addEventListener('resize', () => setHtmlFontSize(), false);
+            }
+        </script>
+
+        <!-- 头部样式，底部导航栏，使用REM实现等宽高比缩放 -->
+        <style>
+            .header-layout,
+            .tabbar-layout {
+                width: 100%;
+                /* 或者width: 75rem; */
+                /* 由设计稿的96px/body的font-size得来 */
+                height: 9.6rem;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <!-- 主体 -->
+        <div class="main-layout">
+            <!-- 幻灯片 -->
+            <div class="slider-layout">
+                <img src="../images/slider/1.jpg" alt="幻灯片" class="slider-img">
+            </div>
+            <!-- 免费课程 -->
+            <div class="course-layout">
+                <div class="course">
+                    <h2 class="course-title">免费课程</h2>
+                    <ul class="course-list">
+                        <li class="course-item">
+                            <a href="javascript:void 0;">
+                                <p class="course-pic">
+                                    <img src="../images/course_free/1.jpg" alt="免费课程图片" class="course-img">
+                                </p>
+                                <p class="course-name">初识HTML(5) + CSS(3) - 2020升级版</p>
+                                <p class="course-price">免费</p>
+                            </a>
+                        </li>
+                        <li class="course-item">
+                            <a href="javascript:void 0;">
+                                <p class="course-pic">
+                                    <img src="../images/course_free/1.jpg" alt="免费课程图片" class="course-img">
+                                </p>
+                                <p class="course-name">初识HTML(5) + CSS(3) - 2020升级版</p>
+                                <p class="course-price">免费</p>
+                            </a>
+                        </li>
+                        <li class="course-item">
+                            <a href="javascript:void 0;">
+                                <p class="course-pic">
+                                    <img src="../images/course_free/1.jpg" alt="免费课程图片" class="course-img">
+                                </p>
+                                <p class="course-name">初识HTML(5) + CSS(3) - 2020升级版</p>
+                                <p class="course-price">免费</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 实战课程 -->
+            <div class="course-layout">实战课程</div>
+        </div>
+
+        <!-- 头部 -->
+        <header class="header-layout">
+            <div class="header">
+                <a href="./index.html" class="header-logo">
+                    <img src="../images/logo.png" alt="logo" class="header-logo-img">
+                </a>
+
+                <button id="header-toggle" class="header-toggle">
+                    <span class="header-toggle-bar"></span>
+                    <span class="header-toggle-bar"></span>
+                    <span class="header-toggle-bar"></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- 标签栏 -->
+        <div class="tabbar-layout">
+            <div class="tabbar">
+                <a href="javascript:;" class="tabbar-item tabbar-item-active">
+                    <i class="iconfont icon-home"></i>
+                    <span>首页</span>
+                </a>
+                <a href="javascript:;" class="tabbar-item">
+                    <i class="iconfont icon-search"></i>
+                    <span>搜索</span>
+                </a>
+                <a href="javascript:;" class="tabbar-item">
+                    <i class="iconfont icon-personal"></i>
+                    <span>我的</span>
+                </a>
+            </div>
+        </div>
+    </body>
+
+</html>
