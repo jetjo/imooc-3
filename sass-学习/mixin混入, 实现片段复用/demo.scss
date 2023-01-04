@@ -1,0 +1,10 @@
+@import "mixins";
+
+.textt {
+    @include sinleline-ellipsis-var-width(30px, "#555");
+}
+
+.textt1 {
+    @include sinleline-ellipsis-var-width(300px, "#fff");
+    color: red;
+}

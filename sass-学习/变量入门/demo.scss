@@ -1,0 +1,18 @@
+$smaller-font: 10px/2;
+// $smaller-font: 10px + 6px;
+$header-font-color: #ccc;
+$title-font-family: 'PingFang SC';
+
+.header-1 {
+    font-size: $smaller-font;
+    color: $header-font-color;
+    font-family: $title-font-family;
+}
+.header-1-1 {
+    font-size: $smaller-font;
+    color: lighten($header-font-color, 20%);
+}
+.header-1-1-1 {
+    font-size: $smaller-font;
+    color: darken($header-font-color, 20%);
+}

@@ -1,0 +1,52 @@
+// 更方便的编写不同媒询下选择器的内容
+
+@mixin ipad($border-width, $border-color) {
+    // 这样放在@media外面的属性不太好，
+    // 因为放在此处的代码所对应的媒询条件不确定！！！
+    border-width: $border-width;
+    @media screen and (min-width: 768px) {
+        @content;
+        border-color: $border-color;
+    }
+}
+
+
+.header {
+    width: 1000px;
+    // @include ipad() {
+    @include ipad(1px, white) {
+width: 500px;
+height: 300px;
+    }
+}
+
+.footer {
+    color: blue;
+    @include ipad(1px, red) {
+color: red;
+    }
+}
+
+/* .... 若干媒询....*/
+
+/* .... 若干媒询....*/
+
+/* .... 若干媒询....*/
+
+/* .... 若干媒询....*/
+
+/* .... 若干媒询....*/
+
+/* .... 若干媒询....*/
+
+/* .... 若干媒询....*/
+
+/* .... 若干媒询....*/
+
+/* .... 若干媒询....*/
+
+/* .... 若干媒询....*/
+
+/* .... 若干媒询....*/
+
+/* .... 若干媒询....*/

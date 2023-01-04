@@ -1,0 +1,26 @@
+/* 缺点：需要修改多处 */
+.header {
+    width: 1000px;
+}
+
+@media screen and (min-width: 768px) {
+    .header {
+        width: 500px;
+    }
+}
+
+.footer {
+    color: blue;
+}
+
+@media screen and (min-width: 768px) {
+    .footer {
+        color: red;
+    }
+}
+
+/* .... 若干媒询....*/
+/* .... 若干媒询....*/
+/* .... 若干媒询....*/
+/* .... 若干媒询....*/
+/* .... 若干媒询....*/

@@ -1,0 +1,8 @@
+.header {
+    span {
+        color: red;
+        &.active {
+            color: greenyellow;
+        }
+    }
+}

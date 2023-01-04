@@ -1,0 +1,13 @@
+@mixin sinleline-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@mixin sinleline-ellipsis-var-width($width, $xxxcolor) {
+    width: $width;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: $xxxcolor;
+}
