@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 @mixin sinleline-ellipsis {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -10,4 +12,19 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     color: $xxxcolor;
+}
+
+@mixin multi-x-line-ellipsis-var-width($height, $x) {
+        height: $height;
+        // // THIS IS DEPRECATED AND WILL BE REMOVED IN SASS 2.0
+        // line-height: $height/$x;
+        line-height: calc($height / $x);
+        line-height: math.div($height , $x);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: $x;
+        -webkit-box-orient: vertical;
+        white-space: normal !important;
+        word-wrap: break-word;
 }

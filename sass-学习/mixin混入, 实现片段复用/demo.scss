@@ -8,3 +8,8 @@
     @include sinleline-ellipsis-var-width(300px, "#fff");
     color: red;
 }
+
+.textt11 {
+    @include multi-x-line-ellipsis-var-width(60px , 5);
+    color: yellow;
+}

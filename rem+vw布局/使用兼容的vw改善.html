@@ -215,26 +215,10 @@
 
         </style>
 
-        <!-- 消除root字体变化的影响 -->
-        <style>
-            body {
-                /* font-size: 10px; */
-            }
-
-            .header,
-            .main-layout,
-            .tabbar-layout {
-                /* 由于使用rem布局时，body的font-size需要根据视口宽度动态变化
-                                为了不影响页面字体，需要在此级处设置font-size */
-                font-size: 16px;
-            }
-
-        </style>
-
         <script>
             // 调整CSS是CSS引擎的指责，网页性能优化的原则就是各司其职，
             // 使用js调整CSS，即需要js引擎，有需要操作DOM, 势必占用js性能，
-            // 所以选择使用vw做单位设置body的字号，这样不用写js代码，就能实现body
+            // 所以选择使用vw做单位设置html元素的字号，这样不用写js代码，就能实现html元素
             // font-size随视口宽度变化而变化
             // // 防止污染全局上下文
             // {
@@ -259,15 +243,17 @@
             // }
         </script>
         <style>
-            body {
-                /* 设计稿的屏幕宽度是750px，编码时，计划设置body的font-size为10px,
+            /* 经过测试，，，rem参考的基准字体尺寸是html元素（即伪元素:root ）的，不是body的！！！！ */
+            html {
+                /* 设计稿的屏幕宽度是750px，编码时，计划设置html元素的font-size为10px,
                 750px是屏幕宽度，对应100vw，那么10px对应多少vw呢？ */
                 font-size: 1.333333vw;
             }
 
-            /* 经过测试，，，rem参考的基准字体尺寸是html的，不是body的！！！！ */
-            html {
-                font-size: 1.333333vw;
+            body {
+                /* 由于使用rem布局时，body的font-size需要根据视口宽度动态变化
+                                为了不影响页面字体，需要在此级处设置font-size */
+                font-size: 16px;
             }
 
         </style>
@@ -278,7 +264,7 @@
             .tabbar-layout {
                 width: 100%;
                 /* 或者width: 75rem; */
-                /* 由设计稿的96px/body的font-size得来 */
+                /* 由设计稿的96px/:root的font-size得来 */
                 height: 9.6rem;
             }
 

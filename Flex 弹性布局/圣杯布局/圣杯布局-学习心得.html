@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>圣杯布局</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+
+        /* background-color: pink; */
+        font-size: 24px;
+      }
+
+      .header-layout,
+      .footer-layout {
+        height: 80px;
+      }
+
+      .header-layout {
+        background-color: red;
+      }
+
+      .footer-layout {
+        background-color: yellow;
+      }
+
+      .body-layout {
+        flex-grow: 2;
+
+        display: flex;
+
+        /* align-items: stretch; */
+      }
+
+      .main-layout {
+        flex-grow: 1;
+        background-color: gray;
+      }
+
+      .nav-layout {
+        width: 200px;
+        background-color: green;
+
+        order: -1;
+      }
+
+      .aside-layout {
+        width: 200px;
+        background-color: lightblue;
+      }
+
+      /* 垂直水平居中 */
+      .flex-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <header class="header-layout flex-center">头部</header>
+
+    <div class="body-layout">
+      <main class="main-layout flex-center">主体部分
+        <br>
+        flex布局时，比如横向布局，<br>
+        第一步：浏览器会先给css的width属性是有指定的定量值的flex-item分配宽度， <br>
+        第二步：如果有剩余的空间，那么会将剩余的空间按比例分配给那些指定了flex-grow值大于0的flex-item <br>
+        注：在第二步之前：如果有的flex-item没有设置定量值的css- width，那么他的width可能会被其内容撑开，<br>
+        如果这个flex-item的overflow-x又是默认值visible，那么当他的width被撑的过于大时，<br>
+        可能会超过flex-box(按照这个flex-item其自身的flex-grow值)所能分配的最大宽度，从而将这个 <br>
+        flex-item后面的flex-item挤出flex-box,<br>
+        所以那些没有设置定量css宽度的flex-item,其overlfow尤其要理解好，必须设置为hidden ,或者auto。 <br>
+
+        <a href="../../rem+vw布局/使用rem布局改善.html">参考../../rem+vw布局/使用rem布局改善.html中的css注释</a>
+      </main>
+      <nav class="nav-layout flex-center">导航</nav>
+      <aside class="aside-layout flex-center">侧栏</aside>
+    </div>
+
+    <footer class="footer-layout flex-center">底部</footer>
+  </body>
+
+</html>

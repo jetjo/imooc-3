@@ -46,7 +46,7 @@
                 display: flex;
                 /* flex-direction和flex-wrap的简写 */
                 flex-flow: column nowrap;
-                /* 要撑满容器的高，所以设置什么无所谓，保持默认 */
+                /* flex-item在主轴上的尺寸要撑满主轴（容器的高），所以设置什么无所谓，保持默认 */
                 justify-content: flex-start;
                 /* 沿交叉轴（即横向）方向上，子元素的对齐方式，
                 设置为stretch的情况下，只要子元素的宽是auto,则会自动拉伸充满
@@ -68,7 +68,7 @@
             .tabbar-layout {
                 /* top: auto;
                 bottom: 0; */
-                /* 不妨尝试将 display 设为除 block 之外的某个值。 */
+                /* 浏览器警告：display: block 属性可防止 order 产生影响。不妨尝试将 display 设为除 block 之外的某个值。 */
                 /* 实际有效果，但不知为何有上面的警告 */
                 order: 2;
             }
@@ -81,6 +81,11 @@
                 将设置了flex-shrink不为0的元素进行压缩，而是出现
                 滚动条，导致排在后面的子元素不滚动的话不可见 */
                 /* 所以flex-shrink要配合overflow来用！！！！！！！！！！！！！！！！ */
+                /* 因为设计上， 宽度是确定的，宽度不够时没有撑开宽度或者不换行且隐藏超出部分，而是换行，
+                虽然overflow-x的默认值是visible，但是没发挥作用；
+                所以内容的布置上就是表现为从左往右然后从上到下，高度不够时 overflow-y的默认值就是visible，
+                高度被继续撑开且超出了flex容器能分配给他的最大值，
+                导致其后面的兄弟flex-item被挤出flex-box*/
                 overflow: auto;
             }
 
@@ -217,14 +222,17 @@
 
         <!-- 消除root字体变化的影响 -->
         <style>
-            body {
+            :root {
+                /*或者 html { */
                 font-size: 10px;
             }
 
+            /* 
             .header,
             .main-layout,
-            .tabbar-layout {
-                /* 由于使用rem布局时，body的font-size需要根据视口宽度动态变化
+            .tabbar-layout { */
+            body {
+                /* 由于使用rem布局时，root元素（html元素）的font-size需要根据视口宽度动态变化
                                 为了不影响页面字体，需要在此级处设置font-size */
                 font-size: 16px;
             }
@@ -240,11 +248,11 @@
                 {
                     const viewWidth = docEI.clientWidth;
                     //UI设计稿的屏幕宽度是750px的，
-                    //此项目编码实现时，假设css样式里，body的font-size的值设置的是10px，
-                    //那么有此等式：(编码人员CSS样式中写的body的font-size)10px / (ui设计人员设计的屏幕宽)750px = 
-                    // 实际运行项目时页面的body的font-size / (实际运行项目时某屏幕的像素宽)viewWidth
+                    //此项目编码实现时，假设css样式里，html的font-size的值设置的是10px，
+                    //那么有此等式：(编码人员CSS样式中写的html的font-size)10px / (ui设计人员设计的屏幕宽)750px = 
+                    // 实际运行项目时页面的html元素（root元素）的font-size / (实际运行项目时某屏幕的像素宽)viewWidth
                     //所以有：
-                    docEI.style.fontSize = `${ 10 * viewWidth / 750 }px`;
+                    docEI.style.fontSize = `${ (10 / 750) * viewWidth }px`;
                 }
 
                 // 页面加载和刷新时执行
@@ -261,7 +269,7 @@
             .tabbar-layout {
                 width: 100%;
                 /* 或者width: 75rem; */
-                /* 由设计稿的96px/body的font-size得来 */
+                /* 由设计稿的96px/html的font-size得来 */
                 height: 9.6rem;
             }
 
