@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- 在添加下面这行时click: 133.583251953125 ms -->
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+        <title>click事件处理回调300ms延时问题</title>
+    </head>
+
+    <body>
+        <button id="btn">点我！！！</button>
+        <div>
+            如果不再head头部添加如下代码，click事件处理函数会延时至少300ms以后才处理： <br>
+            <code>  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"></code> <br>
+            300ms延时出现的原因： <br>
+            移动端要支持双击屏幕缩放这样的功能，双击屏幕动作的过程是：手指点到屏幕上——>手指抬起——>300ms内手指再次点到屏幕上； <br>
+            所以浏览器为了判断用户是否是要双击，所以会在手指点到屏幕又抬起后，等待300ms ，如果300ms后手指没有再点到屏幕上，那么 <br>
+            浏览器再将前面手指点到屏幕后又抬起的两步动作视为click事件。 <br>
+            解决的办法有大类： <br>
+            1、告诉浏览器本页面不支持双击缩放这样的功能，如果可以(即浏览器配合)，那么浏览器就不用再去判断是否有双击事件了，也就 <br>
+            不用在手指点到屏幕后又抬起的两步动作后延时了，而是之间触发一个click事件。 <br>
+            2、绕行模式，即将click事件的业务逻辑挪到touchEnd事件中去。
+
+        </div>
+        <script>
+            const btn = document.getElementById('btn');
+            // 只在移动端触发
+            // 在移动端下window.hasOwnProperty('ontouchstart') == true, window.ontouchstart !== undefined. 在
+            // 没有为window.ontouchstart赋值的情况下，window.ontouchstart === null
+            btn.addEventListener('touchstart', () =>
+            {
+                console.time('click');
+            }, false);
+            btn.addEventListener('click', () =>
+            {
+                console.timeEnd('click');
+            }, false);
+        </script>
+    </body>
+
+</html>

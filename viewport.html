@@ -4,8 +4,39 @@
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+        <!-- <meta name="viewport" content="initial-scale=.2,maximum-scale=.2,minimum-scale=.2,user-scalable=no"> -->
+        <!-- <meta name="viewport" content="initial-scale=.5,maximum-scale=.5,minimum-scale=.5,user-scalable=no"> -->
+        <!-- <meta name="viewport" content="initial-scale=2,maximum-scale=2,minimum-scale=2,user-scalable=no"> -->
+        <meta name="viewport" content="initial-scale=4,maximum-scale=4,minimum-scale=4,user-scalable=no">
         <title>视口</title>
+        <style>
+            body {
+                font-size: 16px;
+                overflow-x: hidden;
+                white-space: pre-wrap;
+                width: 100vw;
+            }
+
+            @media screen and (-webkit-device-pixel-ratio: 2) {
+                :root {
+                    background-color: red;
+                }
+            }
+
+            @media screen and (-webkit-min-device-pixel-ratio: 2) {
+                :root {
+                    background-color: green;
+                }
+            }
+
+            @media screen and (-webkit-min-device-pixel-ratio: 3) {
+                :root {
+                    background-color: blue;
+                }
+            }
+
+        </style>
     </head>
 
     <body>
@@ -17,7 +48,7 @@
         ;&lt;meta name="viewport" content="width=device-width, init-scale=1"> <br>
         上面一行的意思是，设置网页的宽等于设备屏幕像素的宽，所以如果网页的宽本来与显示网页的屏幕像素的宽 <br>
         不一致，那么网页就会被缩放；所以后半句设置init-scale=1和前半句的意思是一样的，即通过缩放，使得 <br>
-        网页和屏幕的像素宽（逻辑像素宽）的币值是1。 <br>
+        网页和屏幕的像素宽（逻辑像素宽）的比值是1。 <br>
         之所以即设置width又设置init- scale，是为了兼容性。 <br>
 
         <br>
@@ -33,6 +64,35 @@
         &lt;meta charset="UTF-8"> <br>
         设置视口的属性值不是init-scale是initial-scale!!! 值是1.0不是1！！！ <br>
 
+        <div id="html-width-load"></div>
+        <div id="html-width-load1"></div>
+        <div id="html-width-scroll-load"></div>
+        <div id="html-width-scroll-load1"></div>
+
+        <script>
+            window.addEventListener('load', () =>
+            {
+                // alert('load');
+                const el = document.getElementById('html-width-load');
+                el.innerHTML = document.documentElement?.clientWidth + ' load';
+                const el1 = document.getElementById('html-width-scroll-load');
+                el1.innerHTML = document.documentElement?.scrollWidth + ' load';
+            }, false)
+            // 先于window.onload事件执行
+            window.addEventListener('DOMContentLoaded', () =>
+            {
+                // alert('DOMContentLoaded');
+                const el = document.getElementById('html-width-load1');
+                el.innerHTML = document.documentElement?.clientWidth + ' DOMContentLoaded';
+                const el1 = document.getElementById('html-width-scroll-load1');
+                el1.innerHTML = document.documentElement?.scrollWidth + ' DOMContentLoaded';
+            }, false)
+        </script>
+
+        initial-scale的值大于1之后，页面的宽度小于屏幕的宽度，但是页面内容比如字体的字号是不变的，页面被拉伸以充满屏幕，
+        所以页面的字体被放大，虽然字号没变。
+
+        initial-scale的值小于1之后，页面的宽度大于屏幕的最大css像素宽度，页面被压缩，字体看起来变小了。
     </body>
 
 </html>
