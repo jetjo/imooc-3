@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                border: none;
+                outline: 0;
+            }
+
+            div {
+                /* height: 10px; */
+                border: 1px solid #000;
+                border-radius: 5px;
+            }
+
+            div>div {
+                height: 484px;
+                width: 484px;
+                border: 1px solid #000;
+                margin: 20px auto;
+            }
+
+            @media screen and (-webkit-device-pixel-ratio: 1) {
+                div>div {
+                    background-color: skyblue;
+                }
+            }
+
+            @media screen and (-webkit-min-device-pixel-ratio: 1.5) {
+                div>div {
+                    background-color: green;
+                }
+            }
+
+            @media screen and (-webkit-min-device-pixel-ratio: 2) {
+                div>div {
+                    background-color: RED;
+                }
+            }
+
+            @media screen and (-webkit-min-device-pixel-ratio: 2.5) {
+                div>div {
+                    background-color: purple;
+                }
+            }
+
+            .BOX {
+                height: 1cm;
+                width: 1cm;
+                margin: 0 auto;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div>
+            <div>
+                <div class="BOX"></div>
+                保持dpr为1的情况下，将屏幕分辨率在800*600和2520*1680两种分辨率之间切换，
+                可以发现盒子的物理尺寸有明显的不同， <br>
+                可见css像素的物理尺寸是随着物理像素点的尺寸和dpr的变化而变化的！！！ <br>
+
+                其实道理很简单，同一个屏幕，分辨率变高了，dpr是1时，分辨率就是CSS像素的意思，当然同一个Css width <br>
+                在高分辨率时显示的就短。
+            </div>
+        </div>
+
+
+        <div style="display: flex; justify-content: center;">
+            <img src="./Screenshot 2023-01-05 115155.png" alt="">
+        </div>
+
+    </body>
+
+</html>

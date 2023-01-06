@@ -1,0 +1,11 @@
+@use 'sass:math';
+
+@mixin set-1-px-border($dpr) {
+    @media  screen and (-webkit-min-device-pixel-ratio: $dpr) {
+        width: $dpr * 100%;
+        height: $dpr * 100%;
+        transform: scale(1/$dpr, 1/$dpr);
+        @content;
+    }
+}
+

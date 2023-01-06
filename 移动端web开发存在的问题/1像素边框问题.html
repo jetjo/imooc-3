@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>1像素边框问题</title>
+        <link rel="stylesheet" href="./1px-border.css">
+    </head>
+
+    <body>
+        问题根源：UI人员给边框标1px的像素值，可能想表达的意思是展示设备支持的最细的边框 <br>
+        但是在编码时如果直接设置border-width是1px,那么在dpr等于1的屏幕上当然没问题， <br>
+        因为此时1px CSS像素渲染出来就是1px的物理像素，是最细的。 <br>
+        但是当dpr不为1时，比如dpr为2，那么1px的CSS像素渲染出来是2px的设备像素 <br>
+        这就是1像素边框的问题。
+
+        <div class="old-box"></div>
+        <div class="new-box"></div>
+    </body>
+
+</html>
