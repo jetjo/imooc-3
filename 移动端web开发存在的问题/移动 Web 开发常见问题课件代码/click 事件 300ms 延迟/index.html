@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1,maximum-scale=1, user-scalable=no"
+    />
+    <title>click 事件 300ms 延迟</title>
+    <style>
+      .btn {
+        width: 100%;
+        height: 300px;
+        font-size: 100px;
+
+        /* touch-action: manipulation; */
+      }
+    </style>
+  </head>
+  <body>
+    <button id="btn" class="btn">提交</button>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+    <script>
+      // 1.移动端 click 事件 300ms 延迟的原因
+      // 原因：double-tap to zoom 双击缩放
+
+      // 2.解决方案
+      // 2.1.不使用 click 事件，把 click 事件中要处理的放到 touchstart 或 touchend 中去处理
+
+      // 2.2.禁止双击缩放（浏览器厂商的努力）
+      // https://patrickhlauke.github.io/touch/tests/results/#suppressing-300ms-delay
+
+      // 2.2.1.viewport 中禁止缩放
+      // 2.2.2.touch-action: manipulation;
+
+      // 2.3.使用 Fastclick 库
+      // 主要针对老版本浏览器
+      // https://github.com/ftlabs/fastclick
+      if ('addEventListener' in document) {
+        document.addEventListener(
+          'DOMContentLoaded',
+          function () {
+            FastClick.attach(document.body);
+          },
+          false
+        );
+      }
+
+      const $btn = document.getElementById('btn');
+      $btn.addEventListener(
+        'touchstart',
+        () => {
+          console.time('click');
+        },
+        false
+      );
+      // $btn.addEventListener(
+      //   'touchend',
+      //   () => {
+      //     console.timeEnd('click');
+      //     console.log('提交表单');
+      //   },
+      //   false
+      // );
+      $btn.addEventListener(
+        'click',
+        () => {
+          console.timeEnd('click');
+          console.log('提交表单');
+        },
+        false
+      );
+    </script>
+  </body>
+</html>

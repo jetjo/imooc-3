@@ -6,7 +6,23 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <!-- 在添加下面这行时click: 133.583251953125 ms -->
         <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+        <!-- <meta name="viewport" content="user-scalable=no"> -->
+        <!-- <meta name="viewport" content="minimum-scale=1, maximum-scale=1.0"> -->
+        <!-- <meta name="viewport" content="width=device-width"> -->
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"> -->
         <title>click事件处理回调300ms延时问题</title>
+        <style>
+            :root {
+                /* touch-action: none; */
+                /* touch-action: manipulation; */
+            }
+
+            #btn {
+                /* touch-action: none; */
+                /* touch-action: manipulation; */
+            }
+
+        </style>
     </head>
 
     <body>
@@ -19,10 +35,34 @@
             所以浏览器为了判断用户是否是要双击，所以会在手指点到屏幕又抬起后，等待300ms ，如果300ms后手指没有再点到屏幕上，那么 <br>
             浏览器再将前面手指点到屏幕后又抬起的两步动作视为click事件。 <br>
             解决的办法有大类： <br>
-            1、告诉浏览器本页面不支持双击缩放这样的功能，如果可以(即浏览器配合)，那么浏览器就不用再去判断是否有双击事件了，也就 <br>
-            不用在手指点到屏幕后又抬起的两步动作后延时了，而是之间触发一个click事件。 <br>
-            2、绕行模式，即将click事件的业务逻辑挪到touchEnd事件中去。
+            1、<a href="https://patrickhlauke.github.io/touch/tests/results/#suppressing-300ms-delay">
+                告诉浏览器本页面不支持双击缩放这样的功能，如果可以(即浏览器配合)，那么浏览器就不用再去判断是否有双击事件了，也就 <br>
+                不用在手指点到屏幕后又抬起的两步动作后延时了，而是之间触发一个click事件。</a> <br>
+            2、绕行模式，即将click事件的业务逻辑挪到touchEnd事件中去。 <br>
+            <br>
+            第一类方案有一下几种具体办法： <br>
+            1、设置虚拟布局视口的user-scalable=no, 即在网页的head中加入如下一行 <br>
+            <code> &lt;meta name="viewport" content="user-scalable=no"> </code> <br>
+            2、设置虚拟布局视口的minimum-scale=1，和maximum-scale=1.0，即在网页head中加入如下一行 <br>
+            <code> &lt;meta name="viewport" content="minimum-scale=1, maximum-scale=1.0"> </code> <br>
+            3、设置虚拟布局视口的width=device-width，即在网页的head中加入如下一行 <br>
+            <code> &lt;meta name="viewport" content="width=device-width"></code>
+            4、若要希望某个元素（所在区域）不在响应双击缩放，可以设置元素的style的touch-action属性为none或者manipulation（"pan-x pan-y pinch-zoom"的别名）
 
+
+            <br> <a href="https://github.com/ftlabs/fastclick">最后，若要兼容老版本的浏览器可以使用Fastclick库</a> <br>
+
+
+            <script src="https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+            <script>
+                if ('addEventListener' in document)
+                {
+                    document.addEventListener('DOMContentLoaded', function ()
+                    {
+                        FastClick.attach(document.body);
+                    }, false);
+                }
+            </script>
         </div>
         <script>
             const btn = document.getElementById('btn');

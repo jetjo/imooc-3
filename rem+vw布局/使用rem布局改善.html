@@ -244,6 +244,8 @@
             {
                 const docEI = document.documentElement;
 
+                // flexible 方案
+                // https://github.com/amfe/lib-flexible
                 const setHtmlFontSize = () =>
                 {
                     const viewWidth = docEI.clientWidth;
@@ -263,12 +265,15 @@
             }
         </script>
 
-        <!-- 头部样式，底部导航栏，使用REM实现等宽高比缩放 -->
+        <!-- 头部样式，底部导航栏，使用REM实现等宽高比缩放(本页面练习的目的) -->
         <style>
             .header-layout,
             .tabbar-layout {
                 width: 100%;
-                /* 或者width: 75rem; */
+                /* 或者width: 75rem;，之所以不用可以这么写，是因为
+                75rem就是100%的html宽度，并且通过js的onresize事件处理函数
+                实现html的宽度保持为75rem(通过改变html元素字体尺寸达成) 。
+                这样就能保持块元素的宽高比保持为750/96了*/
                 /* 由设计稿的96px/html的font-size得来 */
                 height: 9.6rem;
             }

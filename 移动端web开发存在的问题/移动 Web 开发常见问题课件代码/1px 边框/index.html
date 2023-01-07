@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1px 边框</title>
+    <style>
+      body {
+        background-color: #f5f5f5;
+      }
+
+      .list {
+        padding: 0;
+        margin: 0;
+        font-size: 30px;
+      }
+      .item {
+        list-style: none;
+        line-height: 60px;
+        border-bottom: 1px solid #ccc;
+      }
+
+      /* 直接设置“细”边框 */
+      .item1 {
+        border-width: 0.5px;
+      }
+
+      /* 伪类 + transform */
+      @media (-webkit-min-device-pixel-ratio: 2) {
+        .border-1px {
+          position: relative;
+          border: none;
+        }
+        .border-1px::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 200%;
+          height: 200%;
+          /* 设置相应边框 */
+          border-bottom: 1px solid #ccc;
+          /* border: 1px solid #ccc; */
+          /* 设置圆角 */
+          /* border-radius: 20px; */
+          transform-origin: 0 0;
+          transform: scale(0.5);
+
+          /* background-color: rgba(255, 0, 0, 0.5); */
+        }
+      }
+      @media (-webkit-min-device-pixel-ratio: 3) {
+        .border-1px::after {
+          width: 300%;
+          height: 300%;
+          transform: scale(0.3333);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <ul class="list">
+      <li class="item">“变粗”的 1px 边框</li>
+      <!-- <li class="item">变粗的原因</li>
+      <li class="item">解决方案</li> -->
+      <li class="item item1">直接设置“细”边框</li>
+      <li class="item border-1px">伪类 + transform</li>
+    </ul>
+
+    <script>
+      // 1.高清屏下，1px 边框“变粗”的原因
+      // 并不是真的变粗了，而是设计想要的 1像素，不是程序员眼中的 1CSS像素，而是 1物理像素
+      // 如果 dpr=2，设计实际想要的就是 1px/2=0.5px
+      // 如果 dpr=3，设计实际想要的就是 1px/3=0.3333px
+
+      // 2.解决方案
+      // 2.1.和设计商量，如果不在意这个问题，不用去管
+
+      // 2.2.直接设置“细”边框
+      // 存在兼容性问题，不同的浏览器会有不同的表现
+      // 对于 iOS8 以后的 iOS 系统推荐使用这种方法
+
+      // 2.3.伪类 + transform（推荐）
+      // 支持四个边框、颜色、圆角的设置
+
+      // 其他方案可参考：https://www.cnblogs.com/zzsdream/articles/6004933.html
+    </script>
+  </body>
+</html>

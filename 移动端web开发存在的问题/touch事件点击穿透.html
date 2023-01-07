@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0, minimum-scale=1,maximum-scale=1, user-scalable=no" />
+        <title>Touch 事件点击穿透</title>
+        <style>
+            .btn {
+                width: 100%;
+                height: 300px;
+                font-size: 100px;
+            }
+
+            .mask {
+                position: fixed;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+
+                /* 方法二的一部分 */
+                opacity: 1;
+                transition: opacity 0.5s;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <button id="btn" class="btn">提交</button>
+        <div id="mask" class="mask"></div>
+
+        <script>
+            window.$btn = document.getElementById('btn');
+            window.$mask = document.getElementById('mask');
+
+            window.$mask.addEventListener('touchend', () =>
+            {
+                // window.$mask.style.display = 'none';
+            }, false);
+
+            window.$mask.addEventListener('touchstart', () =>
+            {
+                console.time('click');
+            }, false);
+
+            window.$btn.addEventListener('click', () =>
+            {
+                console.timeEnd('click');
+                console.log('提交表单！');
+            })
+        </script>
+
+        <div>
+            如果在按钮上方处点击遮罩层，会导致按钮被点到 称为“Touch 事件点击穿透”问题 <br>
+            原因是：从touchstart事件到touchend事件再到click事件会有100ms左右(如果没有禁用掉移动端双击缩放的话，大概有300ms)的延时，但是还没到触发遮罩层的click事件时，遮罩层就没有了，
+            所以click事件就派发到了遮罩层点击处下方的按钮上。 <br>
+            所以解决问题的核心是延时消失。
+        </div>
+
+        <!-- 方法一 单纯延时-->
+        <script>
+            window.$mask.addEventListener('touchend', () =>
+            {
+                setTimeout(() =>
+                {
+                    // window.$mask.style.display = 'none';
+                }, 200);
+            }, false);
+
+        </script>
+
+        <!-- 方法二 动画延时 -->
+        <script>
+            window.$mask.addEventListener('touchend', () =>
+            {
+                window.$mask.style.opacity = 0;
+                // window.$mask.style.display = 'none';
+            }, false);
+            window.$mask.addEventListener('transitionend', () =>
+            {
+                window.$mask.style.display = 'none';
+            }, false);
+        </script>
+    </body>
+
+</html>

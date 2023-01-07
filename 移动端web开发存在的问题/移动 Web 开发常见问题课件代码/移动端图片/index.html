@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1,maximum-scale=1, user-scalable=no"
+    />
+    <title>移动端图片</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      /* 1.img 图片 */
+      /* 一般使用百分比，并且只设置宽度或高度中的一个，不同时设置，让宽高能够等比例缩放，图片不失真 */
+      .img-container {
+        display: flex;
+        justify-content: center;
+      }
+      img {
+        /* 当图片实际宽度小于父容器宽度时，图片会被强行拉伸至与父容器同宽 */
+        width: 100%;
+
+        /* 当图片实际宽度小于父容器宽度时，图片不会随着父容器宽度的变大而进一步拉伸 */
+        /* max-width: 100%; */
+      }
+
+      /* 2.背景图片 */
+      .bg-container {
+        width: 100%;
+
+        /* 2.1.如果高度固定 */
+        /* height: 200px; */
+
+        /* 2.2.如果高度不固定 */
+        /* 563px 224px */
+        /* 和使用 img 标签引入图片的方式类似 */
+        /* 相对于宽度的百分比 */
+        padding-top: 39.7869%;
+
+        /* background-color: red; */
+
+        /* 小屏幕使用小图片 */
+        background: url(./bg.png) no-repeat;
+
+        /* 缩放背景图片以完全覆盖背景区，可能背景图片部分看不见 */
+        background-size: cover;
+      }
+
+      /* 结合媒询一起使用 */
+      /* 大屏幕使用大图片 */
+      @media (min-width: 560px) {
+        .bg-container {
+          background-image: url(./bg_lg.png);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 1.img 图片 -->
+    <!-- <div class="img-container">
+      <img src="img.jpg" alt="" />
+    </div> -->
+
+    <!-- 2.背景图片 -->
+    <div class="bg-container"></div>
+  </body>
+</html>

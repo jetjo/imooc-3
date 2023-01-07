@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- <meta name="viewport" content="initial-scale=4.0"> -->
+        <!-- <meta name="viewport" content="initial-scale=2.0"> -->
+        <!-- <meta name="viewport" content="initial-scale=.5"> -->
+        <title>媒体查询的逻辑</title>
+        <style>
+            div {
+                /* width: 600px; */
+                height: 200px;
+                margin: 0 auto;
+
+                padding: 10px;
+
+                font: 700 30px/1 "Times New Roman", "Microsoft YaHei", "PingFang SC";
+                color: #00f;
+
+                border: 5px solid #00f;
+            }
+
+            /* 屏幕尺寸在[375px, 380px]时生效 */
+            @media screen and (min-width: 375px) and (max-width: 380px) {
+                .box-and {
+                    background-color: #0f0;
+                }
+            }
+
+            /* 屏幕尺寸<= 375px ,或者屏幕尺寸 >= 380px时生效 */
+            @media screen and (max-width: 375px),
+            (min-width: 380px) {
+                .box-or {
+                    background-color: #f00;
+                }
+            }
+
+            /* 屏幕尺寸< 375px ,或者屏幕尺寸 > 380px时生效 */
+            @media not screen and (min-width: 375px) and (max-width: 380px) {
+                .box-not-and {
+                    background-color: #ff0;
+                }
+            }
+
+            /* 屏幕尺寸> 375px时生效 */
+            @media not screen and (max-width: 375px),
+            (min-width: 380px) {
+                .box-not-or {
+                    background-color: #000;
+                }
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="box-and">
+            <code>@media screen and (min-width: 375px) and (max-width: 380px)</code>
+            <br> 屏幕尺寸在[375px,380px]时, 背景颜色变绿
+        </div>
+        <div class="box-or">
+            <code>@media screen and (max-width: 375px),(min-width: 380px)</code>
+            <br> 屏幕尺寸&lt;= 375px ,或者屏幕尺寸>= 380px时, 背景颜色变红
+        </div>
+        <div class="box-not-and">
+            <code>@media not screen and (min-width: 375px) and (max-width: 380px)</code>
+            <br> 屏幕尺寸&lt;375px ,或者屏幕尺寸> 380px时, 背景颜色变黄
+        </div>
+        <div class="box-not-or">
+            <code>@media not screen and (max-width: 375px),(min-width: 380px)</code>
+            <br> 屏幕尺寸> 375px时, 背景颜色变黑
+        </div>
+
+        <p id="layout-viewport-info"></p>
+        <p>经测试发现，媒体查询中的min-width、max-width等指的是html元素的宽度，也就是html所处的虚拟布局视口的宽度，不是屏幕（视觉视口）的分辨率； <br>
+            比如在initial-scale=2且屏幕分辨率宽是375px时，.box-and的div盒子背景色并没有变绿，而是将屏幕加宽到宽度为750px时才可以。</p>
+
+        <script>
+            function showLayoutViewportWidth()
+            {
+                const layoutViewportInfo = document.getElementById('layout-viewport-info');
+                const htmlElement = document.documentElement;
+                layoutViewportInfo.innerHTML = `${ JSON.stringify(htmlElement.getBoundingClientRect()) }`;
+            }
+            window.addEventListener('load', () =>
+            {
+                showLayoutViewportWidth();
+            }, false);
+            window.addEventListener('resize', () =>
+            {
+                showLayoutViewportWidth();
+            }, false);
+        </script>
+    </body>
+
+</html>
