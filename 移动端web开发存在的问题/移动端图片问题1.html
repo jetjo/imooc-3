@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>移动端图片问题1</title>
+        <style>
+            /* #region css reset */
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            img {
+                /* 使得图片在撑开一个没有指定高的块容器时，不在容器底部留有空隙，图片的高正好是容器高 */
+                vertical-align: top;
+            }
+
+            /* #endregion */
+
+            /* 方案一 */
+            .box>img {
+                width: 100%;
+            }
+
+            /* #region 方案二 */
+            .flex-xcenter-box {
+                display: flex;
+                justify-content: center;
+            }
+
+            .flex-xcenter-box>img {
+                max-width: 100%;
+            }
+
+            /* #endregion */
+
+        </style>
+    </head>
+
+    <body>
+        <div class="box">
+            <img src="./移动 Web 开发常见问题课件代码/移动端图片/img.jpg" alt="">
+        </div>
+        <div class="flex-xcenter-box">
+            <img src="./移动 Web 开发常见问题课件代码/移动端图片/img.jpg" alt="">
+        </div>
+        <br>
+        <div>移动端图片的尺寸一般只设置宽或高中的一个，并且使用%为单位；加上图片本身有自动等比缩放的能力，这样以%设置宽高中的一个，可以保证这种能力有效，使得图片不变形</div>
+        <div>
+            1、当不设置高，设置宽为容器盒子宽的100%时，但容器的宽变大时，图片也自动等比放大， <br>
+            存在的问题是，当容器变得非常宽时，图片因过于放大，可能会是真。
+        </div>
+        <div>
+            2、当不设置高和宽，设置max-width 为100%时，容器的宽变大时，图片也自动等比放大，但是当图片的宽度达到图片文件本身的像素宽时，图片不在随容器放大，这可以解决上面第一条失真的问题。 <br>
+            但是，又会出现宽度不能撑满容器宽度而留白的问题。
+        </div>
+    </body>
+
+</html>
