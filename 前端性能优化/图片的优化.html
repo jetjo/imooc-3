@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>图片的优化</title>
+    </head>
+
+    <body>
+        <h3>从减少http请求数量考虑</h3>
+        <ol>
+            <li>尽量使用css代替简单的图片
+                <a href="//webhek.com/post/40-css-shapes.html">参考页面：webhek.com/post/40-css-shapes.html</a>
+            </li>
+            <li>使用精灵图（CSS Sprites）取代大量小图标</li>
+            <li>将小于10kb的图片直接内嵌，即转化为base64编码， data:image/png;base64...</li>
+        </ol>
+        <h3>从减少http请求的资源大小考虑</h3>
+        <ol>
+            <li>使用字体图标iconfont代替字体图片
+
+            </li>
+            <li>对图片进行适当的压缩</li>
+            <li>使用必要尺寸的图片，即通过媒体查询的办法，在小分辨率设备上使用小图片，大分辨率时使用大图片</li>
+            <li>使用更先进的图片编码格式，比如google 发明的webp格式的图片，在相同清晰度下其比其他格式的图片尺寸更小，而且支持动画，缺点时兼容性可能不好，可以在caniuse上查看
+                <img src="./Screenshot 2023-01-11 182416.png" alt="">
+                <img src="./Screenshot 2023-01-11 182507.png" alt="">
+                <img src="./Screenshot 2023-01-11 182658.png" alt="">
+            </li>
+        </ol>
+    </body>
+
+</html>

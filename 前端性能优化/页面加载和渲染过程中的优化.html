@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>页面加载和渲染过程中的优化</title>
+    </head>
+
+    <body>
+        <div>
+            <h3>页面渲染过程 </h3>
+            <p>
+                <img src="./Screenshot 2023-01-11 163926.png" alt="" width="500px">
+            </p>
+            <ol>
+                <li>从上图可以看出，css应该在页面头部引入，否则，页面会出现突然变样等闪动现象；而和渲染无关的js文件放在body尾部引入。</li>
+                <li>减少回流与重绘
+                    <p>回流即reflow后者说relayout, 重绘即repaint， 回流一定引起重绘</p>
+                    当元素被增删或者元素尺寸发生变化时会引起重绘，而当元素仅仅是颜色、背景发生变化时只会引起重绘
+                </li>
+            </ol>
+        </div>
+    </body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <!-- 优化策略2 dns预取 -->
+        <link rel="dns-prefetch" href="//g.alicdn.com">
+        <link rel="dns-prefetch" href="//cdn.tanx.com">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>http请求阶段的优化</title>
+    </head>
+
+    <body>
+        <div>
+            <h3>请求实现的步骤</h3>
+            <ol>
+                <li>在浏览器自己的dns缓存中查找请求资源的域名对应的IP</li>
+                <li>如果上一步没有查到IP，则向dns服务器去查询IP</li>
+                <li>如果查到了IP，则会与这个IP对应的服务器建立Tcp链接管道</li>
+                <li>使用上一步建立的Tcp管道发起http请求</li>
+                <li>等待并接收HTTP响应</li>
+            </ol>
+        </div>
+        <div>
+            <h3>优化策略</h3>
+            <ol>
+                <li>将页面需要请求的资源切分放到不同的域名上
+                    <p>因为浏览器自身限制，对于同一个域名，最多同时存在6个tcp连接通道，也就是，对于同一个域名，可同时并发6个http请求，剩下的资源就需要排队等待tcp通道让出；
+                        所以针对这一限制，服务端在部署时，可以将资源或接口切分到不同的域名上。
+                        <br>
+                        当然也得把握一个度，因为过多的域名，也意味这过多的dns查询，所以一般拆分到3~5个域名上。
+                    </p>
+                </li>
+                <li>使用dns-prefetch
+                    <p>如果页面引用到了许多不同的跨域域名上的资源，可以在页面head中，将这些域名使用dns预取的方式，在网页开始加载时就预先获取到它们对应的IP地址</p>
+                </li>
+                <li>使用精灵图、合理的合并散碎的css、js文件以减少http请求的数量
+                    <p>但是合并后的资源文件也不能过大，过大也是会消耗太对时间，并且如果这个资源下载失败，波及到的地方会更多。 <br>
+                        再者也要考虑缓存问题，当资源被设置了缓存后，资源过大，缓存会占用过大。</p>
+                </li>
+                <li>内联首屏相关代码以减少http请求的数量
+                    <p>将网站首页使用到的css、js代码直接写在页面中</p>
+                </li>
+                <li>使用localStorage缓存http响应以减少http请求的数量
+                    <p>如果一个http响应的数据量很大，且不经常变化，可以给http响应中放一个过期时间这样的字段，然后前端将其存放在localStorage缓存中</p>
+                </li>
+                <li>使用压缩和混淆降低HTML、CSS、js文件的尺寸以减少http请求的资源的尺寸
+                    <p>压缩就是删除文件中多余的空格和换行，将文件压缩到一行</p>
+                    <p>混淆就是将js中的变量名替换成单个的英文字母</p>
+                </li>
+                <li>服务端，比如Nginx开启gzip压缩以减少http请求的资源的尺寸
+                    <img src="./Screenshot 2023-01-11 155634.png" alt="" width="300px">
+                    <img src="./Screenshot 2023-01-11 155439.png" alt="" width="300px">
+                </li>
+                <li>减少cookie的体积
+                    <p>合理使用cookie,不必要的不要存在cookie中，因为每次http请求都会自动携带cookie,无论服务端是否需要，即使请求的不是接口而是图片等静态资源，所以不要什么东西都存在cookie中
+                    </p>
+                </li>
+            </ol>
+        </div>
+    </body>
+
+</html>

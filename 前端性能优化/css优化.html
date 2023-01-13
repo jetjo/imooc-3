@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>css优化</title>
+        <style>
+            pre {
+                color: blue;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div>
+            <p>CSS优化有两点</p>
+            <ol>
+                <li>选择器的优化
+                    <ol>
+                        <li>
+                            <p>不要嵌套太多层次</p>
+                            <figure>
+                                <figcaption>选择器的解析是从右到左的，比如如下的<code>html</code>结构：</figcaption>
+                                <pre>
+                                    &lt;ul class="list">
+                                        &lt;li class="list-item">
+                                            &lt;a href="" class="list-link">&lt;/a>
+                                        &lt;/li>
+                                    &lt;/ul>
+                                </pre>
+                            </figure>
+                            <figure>
+                                <figcaption>一种嵌套的写法如下：其解析的顺序是先找到页面上所有的a标签，然后再从这些a标签中找到其上级元素是li的，然后再找出li的上级元素是ul的
+                                </figcaption>
+                                <pre>
+                                    ul li a {
+                                        text-decoration: none;
+                                    }
+                                </pre>
+                            </figure>
+                            <figure>
+                                <figcaption>一种嵌套的且画蛇添足的写法如下：
+                                </figcaption>
+                                <pre>
+                                    ul.list li.list-item a.list-link {
+                                        text-decoration: none;
+                                    }
+                                </pre>
+                            </figure>
+                            <figure>
+                                <figcaption>高效的写法如下：
+                                </figcaption>
+                                <pre>
+                                    .list-link {
+                                        text-decoration: none;
+                                    }
+                                </pre>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>不要画蛇添足，要快准狠</p>
+                        </li>
+                        <li>
+                            <p>不要使用过多的通配符选择器</p>
+                        </li>
+                        <li>
+                            <p>删掉空的选择器,删掉无效的选择器,以避免解析器性能浪费并减少css文件尺寸</p>
+                        </li>
+                    </ol>
+                </li>
+                <li>提取公用的选择器
+                    <figure>
+                        <pre>
+                            .box1 { 
+                                width: 50px; 
+                            } 
+                            .box2 { 
+                                width: 50px; 
+                            } 
+                            .box3 { 
+                                width: 50px; 
+                            } 
+                        </pre>
+                    </figure>
+                    <figure>
+                        <figcaption>应该改为如下，以减少<code>css</code>文件尺寸：</figcaption>
+                        <pre>
+                            .box1, .box2, .box3 {
+                                width: 50px;
+                            }
+                        </pre>
+                    </figure>
+                </li>
+                <li>不要再css选择器中使用@import方式引入css文件
+                    <p>在其他的css预编译格式中，比如sass、less等，其中的@import所引入的css文件，在打包时，会把所引用文件中的内容拷贝过哦来； <br>
+                        而如果直接在css中使用@import引入的文件，会在浏览器解析css时发起额外的http请求来获取。</p>
+                </li>
+            </ol>
+        </div>
+    </body>
+
+</html>

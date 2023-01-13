@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DOM优化</title>
+        <style>
+            pre {
+                color: blue;
+            }
+
+        </style>
+        <!-- 课件中的样式 -->
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            th,
+            td {
+                border: 1px solid #ccc;
+                text-align: center;
+            }
+
+            .box {
+                width: 200px;
+                height: 200px;
+                background-color: red;
+            }
+
+            .active {
+                width: 100px;
+                height: 100px;
+                background-color: yellow;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                background-color: #f5f5f5;
+            }
+
+            .list {
+                padding: 0;
+                margin: 0;
+            }
+
+            .item {
+                display: flex;
+                justify-content: space-between;
+                padding: 0 10px;
+                margin-bottom: 10px;
+
+                background-color: #fff;
+
+                font-size: 40px;
+            }
+
+            .backtop {
+                position: fixed;
+                right: 20px;
+                bottom: 20px;
+                width: 90px;
+                height: 90px;
+                line-height: 90px;
+                text-align: center;
+                background-color: rgba(0, 0, 0, 0.6);
+                border-radius: 50%;
+                color: #fff;
+                font-size: 60px;
+                text-decoration: none;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .none {
+                display: none;
+            }
+
+        </style>
+    </head>
+
+    <body>
+
+        <ol id="orderList">
+            <li>渲染的优化
+                <ol>
+                    <li>减少DOM层级
+                        <p>这只是一种理论上的规则，实际可操作性差，因为只有DOM层级有上百层时，才会影响渲染性能</p>
+                    </li>
+                    <li>不要使用table来布局
+                        <p>因为table需要被完全解析后才能显示，对一个cell的改动，都会造成回流</p>
+                    </li>
+                </ol>
+            </li>
+            <li>选择器的优化
+                <p>指的是在使用<code>document.getDocumentBy...,document.querySelector...</code>等选择器时</p>
+                <pre>
+                    //2.1.优先使用 id 来获取单个元素
+                    console.log(document.getElementById('box')); // 推荐
+                    console.log(document.querySelector('#box')); // 不推荐
+                    
+                    //2.2.获取多个元素时，尽量直接通过元素本身的 className 获取
+                    console.log(document.querySelectorAll('ul.list li.item')); // 不推荐
+                    console.log(document.getElementsByClassName('item')); // 推荐
+                    console.log(document.querySelectorAll('.item')); // 推荐
+                </pre>
+            </li>
+            <li>减少DOM操作次数
+                <ol>
+                    <li>总是将获取到的元素引用缓存起来
+                        <pre>
+                            <!-- <script> -->
+                                const todoDatas = ['洗衣服', '做饭', '写代码'];
+                                const $list = document.getElementById('list');
+                                
+                                for (const item of todoDatas) {
+                                    $list.innerHTML += `&lt;li class="item">${item}&lt;/li>`;
+                                }
+                            <!-- </script> -->
+                        </pre>
+                    </li>
+                    <li>避免在循环中多次使用innerHTML，因为每对已经插入到页面DOM树中的元素的innerHTML改写一次，就会引起一次回流
+                        <pre>
+                            <!-- <script> -->
+                                let htmlFrament = '';
+                                for (const item of todoDatas)
+                                {
+                                    htmlFrament += `&lt;li class="item">${ item }&lt;/li>`;
+                                }
+                                $list.innerHTML = htmlFrament;
+                            <!-- </script> -->
+                        </pre>
+                    </li>
+                    <li>新创建的元素完成必要的操作再添加到DOM中去
+                        <pre>
+                            <!-- <script> -->
+                                for (const item of todoDatas)
+                                {
+                                    let $li = document.createElement('li');
+                                    $li.className = 'item';
+                                    $li.innerHTML = item;
+
+                                    // 在加入DOM之前完成所有操作
+                                    $list.appendChild($li);
+                                }
+                            <!-- </script> -->
+                        </pre>
+                    </li>
+                    <li>使用DocumentFragment替代优化多次的appendChild
+                        <pre>
+                            <!-- <script> -->
+                                const fragment = document.createDocumentFragment();
+                                for (const item of todoDatas)
+                                {
+                                    let $li = document.createElement('li');
+                                    $li.className = 'item';
+                                    $li.innerHTML = item;
+                                    fragment.appendChild($li);
+                                }
+                                $list.appendChild(fragment);
+                            <!-- </script> -->
+                        </pre>
+                    </li>
+                    <li>不要直接通过 JS 修改元素的 style，通过添加移除 class 修改元素样式
+                        <pre>
+                            <!-- <script> -->
+                                const $box = document.getElementById('box');
+                                // let active = false;
+                                $box.addEventListener(
+                                    'click',
+                                    () =>
+                                    {
+                                        // if (!active) {
+                                        //   active = true;
+                                        //   // $box.style.width = '100px';
+                                        //   // $box.style.height = '100px';
+                                        //   // $box.style.backgroundColor = 'yellow';
+
+                                        //   $box.classList.add('active');
+                                        // } else {
+                                        //   active = false;
+                                        //   // $box.style.width = '200px';
+                                        //   // $box.style.height = '200px';
+                                        //   // $box.style.backgroundColor = 'red';
+                                        //   $box.classList.remove('active');
+                                        // }
+
+                                        $box.classList.toggle('active');
+                                    },
+                                    false
+                                );
+                            <!-- </script> -->
+                        </pre>
+                    </li>
+                    <li>避免强制回流✦
+                        <p>当读取 <a
+                                href="https://gist.github.com/paulirish/5d52fb081b3570c81e3a">offsetWidth、offsetHeight、clientWidth、clientHeight等‘全局’属性时</a>，需要使页面上其他元素的布局和样式处于最新状态，这会引起多次回流重绘，称为强制回流
+                        </p>
+                        <p>可以将其结果缓存起来，需要更新的时候再更新</p>
+                        <pre>
+                            <!-- <script> -->
+                                // 注意强制回流
+                                const $backtop = document.getElementById('backtop');
+                                let winHeight = window.innerHeight;
+
+                                window.addEventListener(
+                                    'resize',
+                                    () =>
+                                    {
+                                        winHeight = window.innerHeight;
+                                    },
+                                    false
+                                );
+
+                                window.addEventListener('scroll', scrollHandler, false);
+
+                                function scrollHandler()
+                                {
+                                    // console.log('scroll');
+
+                                    if (document.documentElement.scrollTop >= winHeight)
+                                    {
+                                        $backtop.classList.remove('none');
+                                    } else
+                                    {
+                                        $backtop.classList.add('none');
+                                    }
+                                }
+                            <!-- </script> -->
+                        </pre>
+                    </li>
+                </ol>
+            </li>
+        </ol>
+
+        <a href="#orderList" id="backtop" class="backtop">&uarr;</a>
+    </body>
+
+</html>

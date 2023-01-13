@@ -6,10 +6,37 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>移动端图片问题2</title>
+
+        <style>
+            .bg-container {
+                width: 100%;
+                height: 200px;
+                border: 1px solid gold;
+                background-repeat: no-repeat;
+                background-image: url(./移动\ Web\ 开发常见问题课件代码/移动端图片/bg.png);
+                background-size: contain;
+                background-size: cover;
+
+                /* 如果不限制高度，改进 ， 可以让容器的宽高比与图片的宽高比相同*/
+                height: auto;
+                /* 图片的尺寸是563px * 224px */
+                /* 相对于宽度的百分比 */
+                padding-top: 39.7869%;
+            }
+
+            /* 结合媒询一起使用 */
+            /* 大屏幕使用大图片 */
+            @media (min-width: 560px) {
+                .bg-container {
+                    background-image: url(./移动\ Web\ 开发常见问题课件代码/移动端图片/bg_lg.png);
+                }
+            }
+
+        </style>
     </head>
 
     <body>
-
+        <div class="bg-container"></div>
     </body>
 
 </html>

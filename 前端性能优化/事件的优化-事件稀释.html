@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>事件稀释</title>
+        <style>
+            pre {
+                color: blue;
+            }
+
+        </style>
+        <style>
+            .backtop {
+                position: fixed;
+                right: 20px;
+                bottom: 20px;
+                width: 90px;
+                height: 90px;
+                line-height: 90px;
+                text-align: center;
+                background-color: rgba(0, 0, 0, 0.6);
+                border-radius: 50%;
+                color: #fff;
+                font-size: 60px;
+                text-decoration: none;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .none {
+                display: none;
+            }
+
+        </style>
+    </head>
+
+    <body style="height: 2000px">
+        <a href="#" id="backtop" class="backtop none">&uarr;</a>
+        <p>事件稀释的原因：有些事件会在短时间内多次触发， 比如resize, mouseMove，scroll等事件</p>
+        <p>事件稀释的方法
+        <ul>
+            <li>防抖debounce
+                <p>如果触发的事件与上一次事件的时间间隔小于规定的时间，那么上一次事件（被视为抖动）不会被处理函数处理。</p>
+                换句话说
+                <p>如果触发的事件（不是最后一次）与下一次事件的时间间隔小于规定的时间，那么这一次事件（被视为抖动）不会被处理函数处理。</p>
+                <p>如果触发的事件是最后一次，那么他一定会被延时规定时间后被处理</p>
+                <pre>
+                    <!-- <script> -->
+                        function _debounce(fn, context, timeout = 250)
+                        {
+                            let timer = null;
+                            return function ()
+                            // return function (...args)
+                            {
+                                if (timer !== null)
+                                {
+                                    clearTimeout(timer);
+                                    timer = null;
+                                }
+                                timer = setTimeout(() =>
+                                {
+                                    fn.apply(context || this, arguments);
+                                    timer = null;// 参考课件补充~~~~~~~~~~~~~~~~~~~~~
+                                }, timeout);
+                            }
+                        }
+                    <!-- </script> -->
+                </pre>
+                <figure>
+                    <figcaption>课件中的写法</figcaption>
+                    <pre>
+                        <!-- <script> -->
+                            function debounce(fn, miliseconds = 250, context)
+                            {
+                                let timer = null;
+
+                                return function (...args)
+                                {
+                                    const self = context || this;
+
+                                    if (timer)
+                                    {
+                                        clearTimeout(timer);
+                                    }
+
+                                    timer = setTimeout(() =>
+                                    {
+                                        fn.apply(self, args);
+                                        timer = null;
+                                    }, miliseconds);
+                                };
+                            }
+                        <!-- </script> -->
+                    </pre>
+                </figure>
+            </li>
+            <li>节流throttle
+                <p>如果触发的事件与上一次事件的时间间隔小于规定的时间，那么这一次事件不会被处理</p>
+                <p>如果触发的事件是初次，那么他一定会被延时规定时间后被处理</p>
+                <pre>
+                    <!-- <script> -->
+                        function _throttle(fn, context, timeout = 250)
+                        {
+                            let timer = null;
+                            return function ()
+                            {
+                                if (timer !== null) return;
+                                fn.apply(context || this, arguments);
+                                timer = setTimeout(() =>
+                                {
+                                    // clearTimeout(timer);
+                                    timer = null;
+                                }, timeout);
+                            }
+                        }
+
+                    <!-- </script> -->
+                </pre>
+                <figure>
+                    <figcaption>课件中的写法</figcaption>
+                    <pre>
+                        <!-- <script> -->
+                            function throttle(fn, miliseconds = 250, context)
+                            {
+                                let lastEventTimestamp = null;
+
+                                return function (...args)
+                                {
+                                    const self = context || this;
+                                    const now = Date.now();
+
+                                    if (!lastEventTimestamp || now - lastEventTimestamp >= miliseconds)
+                                    {
+                                        lastEventTimestamp = now;
+                                        fn.apply(self, args);
+                                    }
+                                };
+                            }
+                        <!-- </script> -->
+                    </pre>
+                </figure>
+            </li>
+        </ul>
+        </p>
+        <script>
+            // 1.什么是事件稀释
+            // 有些事件在一段时间内会多次触发，事件稀释就是减少这些事件的触发频率
+            // 比如 scroll resize mousemove touchmove 等
+            // window.addEventListener('scroll', handler, false);
+            // window.addEventListener('resize', handler, false);
+            // window.addEventListener('mousemove', handler, false);
+            // window.addEventListener('touchmove', handler, false);
+            // function handler(evt) {
+            //   console.log(evt.type);
+            // }
+
+            const $backtop = document.getElementById('backtop');
+            let winHeight = window.innerHeight;
+
+            window.addEventListener(
+                'resize',
+                _debounce(() =>
+                {
+                    winHeight = window.innerHeight;
+                    console.log(winHeight);
+                }),
+                false
+            );
+
+            // window.addEventListener('scroll', _debounce(scrollHandler), false);
+            // window.addEventListener('scroll', _throttle(scrollHandler), false);
+            window.addEventListener('scroll', _throttle(scrollHandler, $backtop, 500).bind(null, winHeight), false);
+
+
+            function scrollHandler(threshold)
+            {
+                console.log('scroll', threshold, this);
+
+                if (document.documentElement.scrollTop >= threshold)
+                {
+                    this.classList?.remove('none');
+                } else
+                {
+                    this.classList?.add('none');
+                }
+            }
+
+            // 2.防抖 debounce
+            // 在某个时间期限内，事件处理函数只执行一次
+            function _debounce(fn, context, timeout = 250)
+            {
+                let timer = null;
+                return function ()
+                // return function (...args)
+                {
+                    if (timer !== null)
+                    {
+                        clearTimeout(timer);
+                        timer = null;
+                    }
+                    timer = setTimeout(() =>
+                    {
+                        fn.apply(context || this, arguments);
+                        timer = null;// 参考课件补充~~~~~~~~~~~~~~~~~~~~~
+                    }, timeout);
+                }
+            }
+
+            // 3.节流 throttle
+            // 事件处理函数执行一次后，在某个时间期限内不再工作
+            function _throttle(fn, context, timeout = 250)
+            {
+                let timer = null;
+                return function ()
+                {
+                    if (timer !== null) return;
+                    fn.apply(context || this, arguments);
+                    timer = setTimeout(() =>
+                    {
+                        // clearTimeout(timer);
+                        timer = null;
+                    }, timeout);
+                }
+            }
+        </script>
+    </body>
+
+</html>
