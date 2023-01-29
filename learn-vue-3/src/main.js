@@ -1,8 +1,26 @@
 import { createApp, toRaw } from 'vue'
+// import { createApp, toRaw } from 'vue/dist/vue.runtime.esm-bundler';
+// import { createApp, toRaw } from 'vue/dist/vue.esm-bundler';
 import './style.css'
-import App from './App.vue'
+import _App from './App.vue'
+import RootCom_Lifecycle from "./根组件的生命周期.vue";
+import HelloWorld from "./components/HelloWorld.vue";
+import dynamicCom from "./动态组件/index.vue";
+import asyncCom from "./异步组件/index.vue";
+
+// const App = _App;
+const App = RootCom_Lifecycle;
 
 const app = createApp(App);
+
+app.component('HelloWorld', HelloWorld);
+app.component('dynamicCom', dynamicCom);
+app.component('asyncCom', asyncCom);
+
+app.config.globalProperties.unmount = app.unmount;
+app.config.globalProperties.__unmount = app.unmount;
+app.provide('unmount', app.unmount);
+
 window.___$vue_app = app;
 console.log(app, "查看并学习vue_app上的属性和方法");
 
