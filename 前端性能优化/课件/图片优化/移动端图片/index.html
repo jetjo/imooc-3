@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1,maximum-scale=1, user-scalable=no"
+    />
+    <title>移动端图片</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      .bg-container {
+        width: 100%;
+        padding-top: 39.7333%;
+
+        /* 小屏幕使用小图片 */
+        background: url(./bg.png) no-repeat;
+
+        /* 缩放背景图片以完全覆盖背景区，可能背景图片部分看不见 */
+        background-size: cover;
+      }
+
+      /* 大屏幕使用大图片 */
+      @media (min-width: 560px) {
+        .bg-container {
+          background-image: url(./bg_lg.png);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-container"></div>
+  </body>
+</html>

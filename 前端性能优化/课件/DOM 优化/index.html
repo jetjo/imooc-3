@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM 优化</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        text-align: center;
+      }
+
+      .box {
+        width: 200px;
+        height: 200px;
+        background-color: red;
+      }
+      .active {
+        width: 100px;
+        height: 100px;
+        background-color: yellow;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        background-color: #f5f5f5;
+      }
+
+      .list {
+        padding: 0;
+        margin: 0;
+      }
+      .item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 10px;
+        margin-bottom: 10px;
+
+        background-color: #fff;
+
+        font-size: 40px;
+      }
+
+      .backtop {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        width: 90px;
+        height: 90px;
+        line-height: 90px;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 50%;
+        color: #fff;
+        font-size: 60px;
+        text-decoration: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .none {
+        display: none;
+      }
+    </style>
+  </head>
+  <body style="height: 2000px">
+    <a href="#" id="backtop" class="backtop">&uarr;</a>
+
+    <ul class="list" id="list">
+      <!-- <li class="item">洗衣服</li>
+      <li class="item">做饭</li>
+      <li class="item">写代码</li> -->
+    </ul>
+
+    <!-- <ul class="list">
+      <li class="item">1</li>
+      <li class="item">2</li>
+      <li class="item">3</li>
+    </ul> -->
+
+    <!-- <div id="box" class="box"></div> -->
+
+    <!-- <table>
+      <tr>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th>性别</th>
+      </tr>
+      <tr>
+        <td>张三</td>
+        <td>18</td>
+        <td>男</td>
+      </tr>
+      <tr>
+        <td>李四</td>
+        <td>20</td>
+        <td>女</td>
+      </tr>
+    </table> -->
+
+    <div>
+      <div>
+        <div>
+          <div>
+            <div>
+              <div>
+                <div>
+                  <div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // 1.渲染优化
+      // 1.1.减少 DOM 元素数量和嵌套层级
+      // 1.2.尽量避免使用 table 布局，用其他标签代替
+      //   table 是作为一个整体解析的，要等整个表格都解析完成才显示
+      //   可能很小的一点改动，也会造成整个 table 的重新布局
+
+      // 2.选择器优化
+      // 2.1.优先使用 id 来获取单个元素
+      // console.log(document.getElementById('box')); // 推荐
+      // console.log(document.querySelector('#box')); // 不推荐
+
+      // 2.2.获取多个元素时，尽量直接通过元素本身的 className 获取
+      // console.log(document.querySelectorAll('ul.list li.item')); // 不推荐
+      // console.log(document.getElementsByClassName('item')); // 推荐
+      // console.log(document.querySelectorAll('.item')); // 推荐
+
+      // 3.减少 DOM 操作次数
+      // 3.1.总是将选择器的选择结果缓存起来
+      // 3.2.避免在循环中多次使用 innerHTML，在循环结束后使用一次
+      // 3.3.使用 DocumentFragment 优化多次的 appendChild
+      // 3.4.新创建的元素，完成必要操作后再添加到页面中
+      // 3.5.不要直接通过 JS 修改元素的 style，通过添加移除 class 修改元素样式
+      // 3.6.注意强制回流
+      // 当获取的属性值包括但不限于 offsetTop、offsetLeft、scrollTop、clientTop 这些“全局属性”时，需要此时页面上的其他元素的布局和样式处于最新状态，这会引起多次的回流和重绘。这样的操作称为强制回流
+      // https://gist.github.com/paulirish/5d52fb081b3570c81e3a
+      // 可以将其结果缓存起来，需要更新的时候再更新
+
+      // const todoDatas = ['洗衣服', '做饭', '写代码'];
+
+      // // 总是将选择器的选择结果缓存起来
+      // const $list = document.getElementById('list');
+
+      // // for (const item of todoDatas) {
+      // //   $list.innerHTML += `<li class="item">${item}</li>`;
+      // // }
+
+      // // 避免在循环中多次使用 innerHTML，在循环结束后使用一次
+      // // let html = '';
+      // // for (const item of todoDatas) {
+      // //   html += `<li class="item">${item}</li>`;
+      // // }
+      // // $list.innerHTML = html;
+
+      // for (const item of todoDatas) {
+      //   const $li = document.createElement('li');
+
+      //   // 新创建的元素，完成必要操作后再添加到页面中
+      //   $li.className = 'item';
+      //   $li.innerHTML = item;
+
+      //   $list.appendChild($li);
+      // }
+
+      // 使用 DocumentFragment 优化多次的 appendChild
+      // const $liFragment = document.createDocumentFragment();
+
+      // for (const item of todoDatas) {
+      //   const $li = document.createElement('li');
+
+      //   $li.className = 'item';
+      //   $li.innerHTML = item;
+
+      //   $liFragment.appendChild($li);
+      // }
+      // $list.appendChild($liFragment);
+
+      // 不要直接通过 JS 修改元素的 style，通过添加移除 class 修改元素样式
+      // const $box = document.getElementById('box');
+      // // let active = false;
+      // $box.addEventListener(
+      //   'click',
+      //   () => {
+      //     // if (!active) {
+      //     //   active = true;
+      //     //   // $box.style.width = '100px';
+      //     //   // $box.style.height = '100px';
+      //     //   // $box.style.backgroundColor = 'yellow';
+
+      //     //   $box.classList.add('active');
+      //     // } else {
+      //     //   active = false;
+      //     //   // $box.style.width = '200px';
+      //     //   // $box.style.height = '200px';
+      //     //   // $box.style.backgroundColor = 'red';
+      //     //   $box.classList.remove('active');
+      //     // }
+
+      //     $box.classList.toggle('active');
+      //   },
+      //   false
+      // );
+
+      // 注意强制回流
+      const $backtop = document.getElementById('backtop');
+      let winHeight = window.innerHeight;
+
+      window.addEventListener(
+        'resize',
+        () => {
+          winHeight = window.innerHeight;
+        },
+        false
+      );
+
+      window.addEventListener('scroll', scrollHandler, false);
+
+      function scrollHandler() {
+        // console.log('scroll');
+
+        if (document.documentElement.scrollTop >= winHeight) {
+          $backtop.classList.remove('none');
+        } else {
+          $backtop.classList.add('none');
+        }
+      }
+    </script>
+  </body>
+</html>

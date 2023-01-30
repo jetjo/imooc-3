@@ -1,0 +1,12 @@
+body {
+  background-color: #f5f5f5;
+}
+.content {
+  display: flex;
+  justify-content: center;
+}
+.box {
+  width: 200px;
+  height: 200px;
+  background-color: red;
+}

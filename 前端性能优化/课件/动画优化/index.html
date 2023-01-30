@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>动画优化</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      .mask {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 1;
+        /* transition: opacity 0.5s; */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="mask" class="mask"></div>
+
+    <script>
+      // requestAnimationFrame
+      // 和 setTimeout 类似
+      const $mask = document.getElementById('mask');
+
+      $mask.addEventListener(
+        'click',
+        function () {
+          // setTimeout(fadeOut, 20);
+          requestAnimationFrame(fadeOut);
+        },
+        false
+      );
+
+      let opacity = 1;
+      function fadeOut() {
+        opacity -= 0.05;
+
+        if (opacity <= 0) {
+          opacity = 0;
+          $mask.style.display = 'none';
+        } else {
+          requestAnimationFrame(fadeOut);
+        }
+
+        $mask.style.opacity = opacity;
+      }
+
+      // $mask.addEventListener(
+      //   'click',
+      //   function () {
+      //     $mask.style.opacity = 0;
+      //   },
+      //   false
+      // );
+      // $mask.addEventListener(
+      //   'transitionend',
+      //   function () {
+      //     $mask.style.display = 'none';
+      //   },
+      //   false
+      // );
+    </script>
+  </body>
+</html>

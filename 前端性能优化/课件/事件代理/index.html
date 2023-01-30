@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>事件代理</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        background-color: #f5f5f5;
+      }
+      .input {
+        width: 100%;
+        height: 40px;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+        font-size: 20px;
+      }
+      .list {
+        padding: 0;
+        margin: 0;
+      }
+      .item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 10px;
+        margin-bottom: 10px;
+
+        background-color: #fff;
+
+        font-size: 40px;
+      }
+
+      .del {
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="text" id="input" class="input" placeholder="请输入待办事项" />
+    <ul class="list" id="list">
+      <li class="item">洗衣服<a href="javascript:;" class="del">x</a></li>
+      <li class="item">做饭<a href="javascript:;" class="del">x</a></li>
+      <li class="item">写代码<a href="javascript:;" class="del">x</a></li>
+    </ul>
+
+    <script>
+      // 1.什么是事件代理
+      // 也叫事件委托，把原本在子元素上监听的事件委托给父元素，让父元素监听
+
+      // 2.事件代理的实现
+      const $input = document.getElementById('input');
+      const $list = document.getElementById('list');
+
+      // 原理：冒泡
+      $list.addEventListener(
+        'click',
+        evt => {
+          // console.log('click');
+          // console.log(evt.target);
+          if (evt.target.classList.contains('del')) {
+            $list.removeChild(evt.target.parentNode);
+          }
+        },
+        false
+      );
+
+      $input.addEventListener(
+        'keypress',
+        evt => {
+          // console.log(evt);
+          if (evt.keyCode === 13) {
+            // 回车
+            if (!$input.value) return;
+
+            const $item = document.createElement('li');
+            const $del = document.createElement('a');
+            $item.className = 'item';
+            $del.className = 'del';
+            $del.href = 'javascript:;';
+
+            $item.innerHTML = $input.value;
+            $del.innerHTML = 'x';
+
+            // $del.addEventListener(
+            //   'click',
+            //   () => {
+            //     $list.removeChild($item);
+            //   },
+            //   false
+            // );
+
+            $item.appendChild($del);
+            $list.appendChild($item);
+
+            $input.value = '';
+          }
+        },
+        false
+      );
+    </script>
+  </body>
+</html>

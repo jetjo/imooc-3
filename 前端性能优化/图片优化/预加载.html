@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>图片预加载</title>
+        <style>
+            .img-container {
+                display: flex;
+                align-items: center;
+                /* height: 100vh; */
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+
+            img {
+                width: 100%;
+                vertical-align: top;
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="img-container">
+            <img src="../课件/图片预加载/images/1.jpg" alt="图片" id="img" />
+        </div>
+
+        <pre>
+            // 预加载
+            function preLoad(i)
+            {
+                return new Promise((resolve, reject) =>
+                {
+                    if (i >= imgs.length) return reject('已经是最后一张了~');
+                    // // 千万不要这样写，这样写的话错误没有任何办法捕获到
+                    // // ，错误不会被preLoad后面的catch捕获，也不会被preLoad外面的trycatch块捕获到，
+                    // // 错误直接被抛到了根上下文中
+                    // if (i >= imgs.length) return Promise.reject('已经是最后一张了~');
+                    // if (i >= imgs.length) Promise.reject('已经是最后一张了~');
+                    const src = imgs[i];
+                    const image = new Image();
+                    
+                    image.addEventListener('load', () => resolve(image), false);
+                    image.addEventListener('error', (e) => reject(e), false);
+                    
+                    image.src = src;
+                });
+            }
+        </pre>
+        <script>
+            // 1.什么是图片预加载
+            // 提前加载将来可能会用到的图片
+
+            // 2.图片预加载的实现
+            const imgs = [
+                '../课件/图片预加载/images/2.jpg',
+                '../课件/图片预加载/images/3.jpg',
+                '../课件/图片预加载/images/4.jpg',
+                '../课件/图片预加载/images/5.jpg'
+            ];
+
+            const $img = document.getElementById('img');
+            preLoad(0)
+                .then(data => { })
+                .catch(() => { });
+
+            $img?.addEventListener('click', (e) => nextImg(e), false);
+
+            let allCached = false;
+
+            function nextImg(e)
+            {
+                // TODO:这里有别的优化方法，可以把imgs里面的地址计算出页面上的地址
+                const cur = decodeURIComponent(e.target.src).replace(window.location.origin, '').replace('/前端性能优化', '..');
+                let i = imgs.findIndex(i => cur === i);
+                if (i === -1)
+                {
+                    imgs.push(cur);
+                    i = 0;
+                    if (!allCached)
+                    {
+                        preLoad(i + 1)//.catch(() => { return; }).finally(() => e.target.src = imgs[i]);
+                    }
+                    e.target.src = imgs[i];
+                }
+                else if (i >= (imgs.length - 1))
+                {
+                    allCached = true;
+                    console.log('已经是最后一张了！');
+                    i = 0;
+                    e.target.src = imgs[i];
+                }
+                else
+                {
+                    i += 1;
+                    try
+                    {
+                        if (!allCached)
+                        {
+                            preLoad(i + 1).catch((e) =>
+                            {
+                                console.log(e);
+                                return;
+                            })//.finally(() => e.target.src = imgs[i]);
+                        }
+                        e.target.src = imgs[i];
+                    } catch (error)
+                    {
+                        console.warn(error);
+                    }
+                }
+                // alert(imgs.length);
+            }
+
+            // function preLoad(i)
+            // {
+            //     if (i >= imgs.length) i = 0;
+            //     const img = new Image();
+            //     img.src = imgs[i];
+            // }
+
+            // 预加载
+            function preLoad(i)
+            {
+                return new Promise((resolve, reject) =>
+                {
+                    if (i >= imgs.length) return reject('已经是最后一张了~');
+                    // // 千万不要这样写，这样写的话错误没有任何办法捕获到
+                    // // ，错误不会被preLoad后面的catch捕获，也不会被preLoad外面的trycatch块捕获到，
+                    // // 错误直接被抛到了根上下文中
+                    // if (i >= imgs.length) return Promise.reject('已经是最后一张了~');
+                    // if (i >= imgs.length) Promise.reject('已经是最后一张了~');
+                    const src = imgs[i];
+                    const image = new Image();
+
+                    image.addEventListener('load', () => resolve(image), false);
+                    image.addEventListener('error', (e) => reject(e), false);
+
+                    image.src = src;
+                });
+            }
+
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>图片懒加载</title>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+            }
+
+            /* .img-container {
+      } */
+            img {
+                width: 100%;
+                /* 如果不预设高度，可能在触发懒加载事件处理函数时，所有的图片还未加载好，其高度为0，导致所有图片同时加载，起不到懒加载的效果 */
+                height: 183px;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <!-- <div class="img-container"><img src="./images/1.jpg" alt="" /></div>
+    <div class="img-container"><img src="./images/2.jpg" alt="" /></div>
+    <div class="img-container"><img src="./images/3.jpg" alt="" /></div>
+    <div class="img-container"><img src="./images/4.jpg" alt="" /></div> -->
+
+        <div class="img-container">
+            <img src="../课件/图片懒加载/images/loading.gif" alt="" data-src="../课件/图片懒加载/images/1.jpg" class="lazyload" />
+        </div>
+        <div class="img-container">
+            <img src="../课件/图片懒加载/images/loading.gif" alt="" data-src="../课件/图片懒加载/images/2.jpg" class="lazyload" />
+        </div>
+        <div class="img-container">
+            <img src="../课件/图片懒加载/images/loading.gif" alt="" data-src="../课件/图片懒加载/images/3.jpg" class="lazyload" />
+        </div>
+        <div class="img-container">
+            <img src="../课件/图片懒加载/images/loading.gif" alt="" data-src="../课件/图片懒加载/images/4.jpg" class="lazyload" />
+        </div>
+        <div class="img-container">
+            <img src="../课件/图片懒加载/images/loading.gif" alt="" data-src="../课件/图片懒加载/images/5.jpg" class="lazyload" />
+        </div>
+
+
+        <script>
+
+            let winHeight = window.innerHeight;
+            let winWidth = window.innerWidth;
+
+            // 节流：如果不停的缩放窗口，回调函数只会在第一次及每隔规定时间后执行一次，
+            // 如果最后一次和上一次的间隔小于规定时间，但是最后一次的状态又很重要（即和上一次的状态差距较大），
+            // 而必须要处理最后一次，那么就节流就不适用了
+            // const resizeHandler = _throttle(function ()
+            // 防抖：如果快速缩放窗口，导致触发事件的时间间隔小于规定间隔，那么事件只会在停止缩放后执行最后的一次
+            const resizeHandler = _debounce(function ()
+            {
+                winHeight = window.innerHeight;
+                winWidth = window.innerWidth;
+            }, 150);
+
+            window.addEventListener('resize', () => { resizeHandler(); }, false);
+
+            // 1.什么是图片懒加载
+            // 图片懒加载又叫图片延迟（按需）加载
+            // 在需要的时候加载图片
+
+            // 2.图片懒加载的实现
+            // 图片要设置高度
+            const images = [...document.querySelectorAll('.img-container .lazyload')];
+            lazyload();
+
+            const scrollHandler = _debounce(lazyload);
+            //不适用，如果滚到过快，导致最后一次事件不符合规定时间间隔，而不会执行。
+            // 但是倒数第二次的事件发生时，图片还未进入可视区，则会发生图片不被加载的错误
+            // const scrollHandler = _throttle(lazyload);
+
+            window.addEventListener('scroll', () => { scrollHandler(); }, false);
+
+            function lazyload()
+            {
+                try
+                {
+                    for (let i = 0; i < images.length; i++)
+                    {
+                        const image = images[i];
+                        if (isInVisibleArea(image))
+                        {
+                            image.src = image.dataset.src;
+                            images.splice(i--, 1);
+                        }
+                    }
+                } catch (error)
+                {
+                    console.error(error);
+                }
+            }
+
+            // DOM 元素是否在可视区域内
+            function isInVisibleArea($el)
+            {
+                const rect = $el.getBoundingClientRect();
+                // console.log(rect);
+
+                return (
+                    rect.bottom > 0 &&
+                    rect.top < (window.innerHeight + 183 / 2) &&
+                    rect.right > 0 &&
+                    rect.left < (window.innerWidth + 183 / 2)
+                );
+            }
+
+            // 防抖 debounce
+            // 在某个时间期限内，事件处理函数只执行一次
+            function _debounce(cb, timeout = 1000, context)
+            {
+                let timer = null;
+                return function ()
+                {
+                    if (timer !== null)
+                    {
+                        clearTimeout(timer);
+                        timer = null;
+                        console.warn(arguments, '抖动');
+                    }
+                    timer = setTimeout(() =>
+                    {
+                        console.warn(arguments, '未抖动');
+                        cb.apply(context || this, arguments);
+                        timer = null;
+                    }, timeout);
+                }
+            }
+
+            // 节流 throttle
+            // 事件处理函数执行一次后，在某个时间期限内不再工作
+            function _throttle(cb, timeout = 1000, context)
+            {
+                let timer = null;
+                return function ()
+                {
+                    if (timer !== null)
+                    {
+                        console.warn(arguments, '节流');
+                        return;
+                    }
+                    // 单线程模型，应该不会有两个线程同时进入这个函数吧？？？
+                    timer = setTimeout(() =>
+                    {
+                        timer = null;
+                    }, timeout);
+                    console.warn(arguments, '未节流');
+                    cb.apply(context || this, arguments);
+                }
+            }
+
+        </script>
+    </body>
+
+</html>

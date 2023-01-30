@@ -107,12 +107,13 @@
                             return function ()
                             {
                                 if (timer !== null) return;
-                                fn.apply(context || this, arguments);
+                                // fn.apply(context || this, arguments);
                                 timer = setTimeout(() =>
                                 {
                                     // clearTimeout(timer);
                                     timer = null;
                                 }, timeout);
+                                fn.apply(context || this, arguments);
                             }
                         }
 

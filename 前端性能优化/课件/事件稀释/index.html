@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>事件稀释</title>
+    <style>
+      .backtop {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        width: 90px;
+        height: 90px;
+        line-height: 90px;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 50%;
+        color: #fff;
+        font-size: 60px;
+        text-decoration: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .none {
+        display: none;
+      }
+    </style>
+  </head>
+  <body style="height: 2000px">
+    <a href="#" id="backtop" class="backtop none">&uarr;</a>
+
+    <script>
+      // 1.什么是事件稀释
+      // 有些事件在一段时间内会多次触发，事件稀释就是减少这些事件的触发频率
+      // 比如 scroll resize mousemove touchmove 等
+      // window.addEventListener('scroll', handler, false);
+      // window.addEventListener('resize', handler, false);
+      // window.addEventListener('mousemove', handler, false);
+      // window.addEventListener('touchmove', handler, false);
+      // function handler(evt) {
+      //   console.log(evt.type);
+      // }
+
+      // window.addEventListener('scroll', debounce(scrollHandler), false);
+      window.addEventListener('scroll', throttle(scrollHandler), false);
+
+      const $backtop = document.getElementById('backtop');
+      let winHeight = window.innerHeight;
+
+      window.addEventListener(
+        'resize',
+        debounce(() => {
+          winHeight = window.innerHeight;
+          console.log(winHeight);
+        }),
+        false
+      );
+
+      function scrollHandler() {
+        console.log('scroll');
+
+        if (document.documentElement.scrollTop >= winHeight) {
+          $backtop.classList.remove('none');
+        } else {
+          $backtop.classList.add('none');
+        }
+      }
+
+      // 2.防抖 debounce
+      // 在某个时间期限内，事件处理函数只执行一次
+      function debounce(fn, miliseconds = 250, context) {
+        let timer = null;
+
+        return function (...args) {
+          const self = context || this;
+
+          if (timer) {
+            clearTimeout(timer);
+          }
+
+          timer = setTimeout(() => {
+            fn.apply(self, args);
+            timer = null;
+          }, miliseconds);
+        };
+      }
+
+      // 3.节流 throttle
+      // 事件处理函数执行一次后，在某个时间期限内不再工作
+      function throttle(fn, miliseconds = 250, context) {
+        let lastEventTimestamp = null;
+
+        return function (...args) {
+          const self = context || this;
+          const now = Date.now();
+
+          if (!lastEventTimestamp || now - lastEventTimestamp >= miliseconds) {
+            lastEventTimestamp = now;
+            fn.apply(self, args);
+          }
+        };
+      }
+    </script>
+  </body>
+</html>
