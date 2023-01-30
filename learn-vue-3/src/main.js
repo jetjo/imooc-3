@@ -7,15 +7,17 @@ import RootCom_Lifecycle from "./根组件的生命周期.vue";
 import HelloWorld from "./components/HelloWorld.vue";
 import dynamicCom from "./动态组件/index.vue";
 import asyncCom from "./异步组件/index.vue";
+import customDirective from "./自定义指令/index.vue";
 
-// const App = _App;
-const App = RootCom_Lifecycle;
+const App = _App;
+// const App = RootCom_Lifecycle;
 
 const app = createApp(App);
 
 app.component('HelloWorld', HelloWorld);
 app.component('dynamicCom', dynamicCom);
 app.component('asyncCom', asyncCom);
+app.component('customDirective', customDirective);
 
 app.config.globalProperties.unmount = app.unmount;
 app.config.globalProperties.__unmount = app.unmount;

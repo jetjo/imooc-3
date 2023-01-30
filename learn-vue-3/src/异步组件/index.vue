@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <div class="box">
     <!-- runtime-core.esm-bundler.js:40 [Vue warn]: Component <Anonymous>: setup function returned a promise, 
   but no <Suspense> boundary was found in the parent component tree. 
   A component with async setup() must be nested in a <Suspense> in order to be rendered.  -->
+    <h3>异步组件</h3>
     <Suspense>
       <!-- [Vue warn]: <Suspense> slots expect a single root node.  -->
       <!-- #region 如果写template ，则必须显式指定插槽名称 -->
@@ -42,4 +43,12 @@ import combiningWithOtherComponents from "./结合路由.vue";
 const asynCom_ = defineAsyncComponent(() => import("./asynCom.vue"));
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.box {
+  border: 3px solid gold;
+  margin: 10px 0;
+  :deep(h3) {
+    background-color: yellow;
+  }
+}
+</style>

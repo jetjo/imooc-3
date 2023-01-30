@@ -1,6 +1,11 @@
 // TODO: MVVM框架中的View的一部分
 <template>
+  <!-- <div>
+    <button @click="triggerUpdate" :data-msg="msg">触发更新</button>
+    <button @click="triggerUnmount">触发卸载</button>
+  </div> -->
   <div>
+    <button @click="triggerUnmount">触发卸载</button>
     <button @click="updateAge">点我{{ age }}</button>
   </div>
   <HelloWorld msg="V + V" />
@@ -17,6 +22,7 @@
   <dynamic-com></dynamic-com>
 
   <asyncCom />
+  <custom-directive></custom-directive>
 </template>
 
 <script>
@@ -64,7 +70,7 @@ export default {
 // TODO: MVVM框架中的Model
 <script setup>
 import HelloWorld from "./components/HelloWorld.vue";
-import { ref, reactive } from "vue";
+import { ref, reactive, inject } from "vue";
 // import lifecycleHooks from "./生命周期.vue";
 import lifecycleHooks from "./父子组件生命周期钩子时序.vue";
 
@@ -152,6 +158,13 @@ onUnmounted(() => {
 // onDestroyed(() => {
 //   console.log("父组件", "onDestroyed");
 // });
+function triggerUpdate() {
+  updateAge();
+}
+const _unmount_ = inject("unmount");
+function triggerUnmount() {
+  _unmount_();
+}
 </script>
 
 // TODO: MVVM框架中的View另一部分, 那么MVVM框架中的VM在哪？？？
