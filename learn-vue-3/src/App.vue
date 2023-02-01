@@ -23,6 +23,8 @@
 
   <asyncCom />
   <custom-directive></custom-directive>
+
+  <teleport1></teleport1>
 </template>
 
 <script>
@@ -84,6 +86,8 @@ import lifecycleRe2 from "./生命周期复习2-Options中的方法.vue";
 import lifecycleRe3 from "./生命周期复习3setup.vue";
 import lifecycleRe4 from "./生命周期复习4setup.vue";
 import lifecycleRe5 from "./生命周期5总结.vue";
+
+import teleport1 from "./teleport1.vue";
 
 import {
   onBeforeMount,

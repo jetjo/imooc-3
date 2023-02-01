@@ -39,6 +39,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+/* 如果子元素是绝对定位，body作为包含块也得加position:relative; */
+  position: relative;
 }
 
 h1 {

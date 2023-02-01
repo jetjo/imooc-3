@@ -58,7 +58,7 @@ export default {
 // 在setup中只要导入或者定义的对象的名称符合上述要求，就被视为自定义指令，可以直接在本组件模板内使用
 const vFocus = {
   mounted(el) {
-    el?.focus();
+    // el?.focus();
   },
 };
 </script>

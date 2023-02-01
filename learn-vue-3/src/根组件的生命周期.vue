@@ -56,3 +56,5 @@ export default {
   },
 };
 </script>
+// Component provided template option but runtime compilation is not supported
+// in this build of Vue. Configure your bundler to alias "vue" to
