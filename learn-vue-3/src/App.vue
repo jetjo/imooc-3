@@ -25,6 +25,13 @@
   <custom-directive></custom-directive>
 
   <teleport1></teleport1>
+
+  <reactiveLearn />
+  <reactiveLearn1 />
+  <refLearn />
+  <toRefsLearn />
+  <toRefLearn />
+  <computedLearn />
 </template>
 
 <script>
@@ -87,7 +94,15 @@ import lifecycleRe3 from "./生命周期复习3setup.vue";
 import lifecycleRe4 from "./生命周期复习4setup.vue";
 import lifecycleRe5 from "./生命周期5总结.vue";
 
+import reactiveLearn from "./响应性原理复习/reactive数组.vue";
+import reactiveLearn1 from "./响应性原理复习/reactive解构.vue";
+
+import refLearn from "./响应性原理复习/ref解构.vue";
+
 import teleport1 from "./teleport1.vue";
+import toRefsLearn from "./响应性原理复习/toRefs解构.vue";
+import toRefLearn from "./响应性原理复习/toRef解构.vue";
+import computedLearn from "./响应性原理复习/computed计算属性.vue";
 
 import {
   onBeforeMount,
