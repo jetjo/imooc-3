@@ -33,6 +33,12 @@
   <toRefLearn />
   <computedLearn />
   <watchLearn />
+  <readonlyInject />
+
+  <reactiveUnwrap />
+  <refUnwrapping />
+
+  <refWrapObj />
 </template>
 
 <script>
@@ -106,6 +112,14 @@ import toRefLearn from "./响应性原理复习/toRef解构.vue";
 import computedLearn from "./响应性原理复习/computed计算属性.vue";
 
 import watchLearn from "./响应性原理复习/watch和watcheffect.vue";
+
+import readonlyInject from "./响应性原理复习/响应式状态注入/readonly与响应式数据注入.vue";
+
+import reactiveUnwrap from "./响应性原理复习/自动unwrap特性/reactiveUnwrap.vue";
+
+import refUnwrapping from "./响应性原理复习/自动unwrap特性/refUnwrapping.vue";
+
+import refWrapObj from "./响应性原理复习/ref封装对象.vue";
 
 import {
   onBeforeMount,
