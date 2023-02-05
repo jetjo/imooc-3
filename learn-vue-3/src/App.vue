@@ -39,6 +39,7 @@
   <refUnwrapping />
 
   <refWrapObj />
+  <watchCleanup />
 </template>
 
 <script>
@@ -120,6 +121,8 @@ import reactiveUnwrap from "./响应性原理复习/自动unwrap特性/reactiveU
 import refUnwrapping from "./响应性原理复习/自动unwrap特性/refUnwrapping.vue";
 
 import refWrapObj from "./响应性原理复习/ref封装对象.vue";
+
+import watchCleanup from "./watch和watchEffect的参数及返回值.vue";
 
 import {
   onBeforeMount,
