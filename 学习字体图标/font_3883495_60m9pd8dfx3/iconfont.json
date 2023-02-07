@@ -1,0 +1,16 @@
+{
+  "id": "3883495",
+  "name": "learn-icon-font",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "7239407",
+      "name": "car",
+      "font_class": "car",
+      "unicode": "e6e6",
+      "unicode_decimal": 59110
+    }
+  ]
+}
