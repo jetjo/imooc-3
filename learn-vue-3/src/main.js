@@ -9,10 +9,13 @@ import dynamicCom from "./动态组件/index.vue";
 import asyncCom from "./异步组件/index.vue";
 import customDirective from "./自定义指令/index.vue";
 
+import { install as pluginLearn } from "./插件/learn";
+
 const App = _App;
 // const App = RootCom_Lifecycle;
 
 const app = createApp(App);
+app.use(pluginLearn);
 
 app.component('HelloWorld', HelloWorld);
 app.component('dynamicCom', dynamicCom);

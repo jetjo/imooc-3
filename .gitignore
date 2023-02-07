@@ -9,3 +9,4 @@ grid布局/课件资料/
 sass-学习/**/*.css
 sass-学习/**/*.css.map
 .yarn/
+**/node_modules/

@@ -40,6 +40,7 @@
 
   <refWrapObj />
   <watchCleanup />
+  <plugin-learn></plugin-learn>
 </template>
 
 <script>
@@ -123,6 +124,8 @@ import refUnwrapping from "./响应性原理复习/自动unwrap特性/refUnwrapp
 import refWrapObj from "./响应性原理复习/ref封装对象.vue";
 
 import watchCleanup from "./watch和watchEffect的参数及返回值.vue";
+
+import pluginLearn from "./插件/index.vue";
 
 import {
   onBeforeMount,
