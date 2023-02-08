@@ -2,14 +2,22 @@ const utils = require('util');
 const fs = require('fs');
 
 const open = utils.promisify(fs.open);
+const close = utils.promisify(fs.close);
 
-open('./学习访问文件系统/test.txt', 'r').then(fd =>
+let fd = null;
+open('./学习访问文件系统/test.txt', 'r').then(_fd =>
 {
-    console.log(fd, '...');
+    console.log(_fd, '...');
+    fd = _fd;
 }).catch(err =>
 {
     console.error(err, 'err');
+
+}).finally(() =>
+{
+    fd && close(fd);
 });
+
 
 const stat = utils.promisify(fs.stat);
 stat('./学习访问文件系统/test.txt').then(stats =>
