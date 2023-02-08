@@ -1,4 +1,4 @@
-const http = require('http')
+/* const http = require('http')
 
 const server = http.createServer((req, res) =>
 {
@@ -11,4 +11,8 @@ const server = http.createServer((req, res) =>
 
 server.listen(3000);
 
-console.log('服务已经在3000上启动！');
+console.log('服务已经在3000上启动！'); */
+
+let _ = require('./学习访问文件系统/index');
+_ = require('./学习访问文件系统/path');
+
