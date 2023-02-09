@@ -1,5 +1,5 @@
 {
-  "name": "learn-koa2",
+  "name": "learn-mongodb",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "koa": "^2.14.1"
+    "mongodb": "^5.0.1"
   }
 }
