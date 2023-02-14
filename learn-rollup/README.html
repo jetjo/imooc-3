@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>笔记</title>
+    </head>
+
+    <body>
+        <pre>
+        1、全局安装rollup
+            npm install --global rollup
+
+        2、直接执行rollup仅打印help信息
+
+        3、ES6没有导出default，则以下面的导入报错
+            import user1 from './user'
+            应改为：import * as user1 from './user'
+
+        4、如果打包到一起时，模块的变量与引用者的变量处于同一作用域且重名，模块的变量会被改名
+            
+        5、总之，访问未定义变量会报错
+        
+        6、ES模块就像镜子，无论导出多上次，导出的这些都是一个实例，导出就像照镜子，照多少次，镜子中都是一个人
+
+        
+    </pre>
+    </body>
+
+</html>
