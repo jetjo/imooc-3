@@ -14,4 +14,5 @@ let girl = {
     fOneNight
 }
 
+console.log('我被导出了！');
 module.exports = girl;

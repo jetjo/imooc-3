@@ -10,6 +10,8 @@
         money$1 += 8000;
     }
 
+    console.log('我被导出了');
+
     var user2 = /*#__PURE__*/Object.freeze({
         __proto__: null,
         age: age,
