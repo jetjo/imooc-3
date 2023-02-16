@@ -19,6 +19,22 @@
             import user1 from './user'
             应改为：import * as user1 from './user'
 
+            <mark>
+                📌<strong>以import * as obj from ''的模式导入模块时，千万不要对obj的属性进行写操作，除非这个属性是一个setter</strong> <br>
+                比如：<br>
+                模块m如下： <br>
+                <p>
+                    const num = 99;
+                    import {num};
+                </p>
+                引用模块的模块如下： <br>
+                <p>
+                    import * as obj form './m'
+                    obj.num++//这句会报错，因为num在m模块中是个常量！！！
+                </p>
+                ★<strong>总结：ES6模块就像一个单例的类，对于其成员不要进行写，要想改变成员的值，因该通过模块导出的方法</strong>
+            </mark>
+
         4、如果打包到一起时，模块的变量与引用者的变量处于同一作用域且重名，模块的变量会被改名
             
         5、总之，访问未定义变量会报错

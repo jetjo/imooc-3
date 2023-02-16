@@ -8,9 +8,6 @@ import { num, num1 } from './命名导出'
 
 
 console.log(user1, num, num1)
-
-setTimeout(() =>
-{
-    console.log(user1, num, num1)
-}, 60000);
+user1.num++;
+console.log(user1, num, num1)
 

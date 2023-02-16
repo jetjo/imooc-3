@@ -8,6 +8,6 @@ import { num, num1 } from './命名导出'
 
 
 console.log(user1, num, num1)
-user1.num++;
+user1.num1++;
 console.log(user1, num, num1)
 
