@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+// import HelloWorld from "./components/HelloWorld.vue";
+import { ref } from "vue";
+import Component1 from "./component-1";
+import Component2 from "./component-2";
+const t = ref(0);
 </script>
 
 <template>
-  <div>
+  <!-- <div>
     <a href="https://vitejs.dev" target="_blank">
       <img src="/vite.svg" class="logo" alt="Vite logo" />
     </a>
@@ -11,7 +15,13 @@ import HelloWorld from './components/HelloWorld.vue'
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <HelloWorld msg="Vite + Vue" /> -->
+
+  <Component1 :t="t" />
+  <Component2 :t="t" />
+  <Component1 :t="t" />
+  <!-- <Component2 :t="t" /> -->
+  <button @click="() => (t = Math.random())">刷新页面</button>
 </template>
 
 <style scoped>
