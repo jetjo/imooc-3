@@ -1,0 +1,20 @@
+{
+  // "compilerOptions": {
+  //   "noImplicitAny": true //被后面references文件里的配置覆盖了？？？
+  // },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.vitest.json"
+    }
+  ],
+  // "compilerOptions": {
+  //   "noImplicitAny": false //即使放在这儿也无效
+  // },
+}
