@@ -15,6 +15,7 @@ import HelloWorld from './components/HelloWorld.vue'
         <RouterLink to="/lesson1">双向绑定</RouterLink>
         <RouterLink to="/lesson1_1">双向绑定</RouterLink>
         <RouterLink to="/lesson2">属性语法</RouterLink>
+        <RouterLink to="/lesson3">事件修饰符</RouterLink>
       </nav>
     </div>
   </header>

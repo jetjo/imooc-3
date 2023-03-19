@@ -26,6 +26,11 @@ const router = createRouter({
       path: '/lesson2',
       name: 'lesson2',
       component: () => import('../views/属性语法/parent')
+    },
+    {
+      path: '/lesson3',
+      name: 'lesson3',
+      component: () => import('../views/事件修饰符/parent')
     }
   ]
 })
