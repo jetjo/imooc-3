@@ -146,7 +146,7 @@
                         console.warn(arguments, '节流');
                         return;
                     }
-                    // 单线程模型，应该不会有两个线程同时进入这个函数吧？？？
+                    // 单线程模型，应该不会有两个线程同时进入这个函数吧？？？不会呀。。。
                     timer = setTimeout(() =>
                     {
                         timer = null;
