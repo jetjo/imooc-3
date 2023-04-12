@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>mouseleave 和 mouseout 事件</title>
+        <script>
+            window.addEventListener('keydown', (e) =>
+            {
+                // 如果是回退键，则清空控制台
+                if (e?.keyCode === 8)
+                {
+                    console.clear();
+                }
+            })
+        </script>
+        <style>
+            div {
+                border: 1px solid #000;
+                padding: 100px;
+                margin: 0 auto;
+            }
+
+            #div1 {
+                width: 500px;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <p><mark>按回退键清空控制台！页面失焦时无效！</mark></p>
+
+        mouseleave和mouseout事件有如下区别：
+        <ul>
+            <li>mouseleave在离开元素时触发一次，进入子元素内部不会触发；</li>
+            <li>mouseout在离开元素时触发一次，进入子元素后又会触发一次；在元素上移动或不动不会触发，不会持续触发！！！！！！</li>
+            <li>mouseleave只会捕获，冒泡只发生在元素自身</li>
+            <li>mouseout即会冒泡也会捕获，会冒泡到根元素或者冒泡的被stopPropagation()为止，也会从根元素一直捕获到所触发的元素，所以mouseout可以用于事件委托。</li>
+        </ul>
+
+        <div id="div1">
+            <div id="div1-1">
+                <div id="div1-1-1">我是大飞！！！</div>
+            </div>
+        </div>
+
+        <script>
+            window.addEventListener('mouseout', (e) => console.log(`window捕获到了mouseout`), true)
+            document.documentElement.addEventListener('mouseout', (e) => console.log(`html捕获到了mouseout`), true)
+            document.body.addEventListener('mouseout', (e) => console.log(`body捕获到了mouseout`), true)
+            document.getElementById('div1').addEventListener('mouseout', (e) => console.log(`div1捕获到了mouseout`), true)
+            document.getElementById('div1-1').addEventListener('mouseout', (e) => console.log(`div1-1捕获到了mouseout`), true)
+            document.getElementById('div1-1-1').addEventListener('mouseout', (e) => console.log(`div1-1-1捕获到了mouseout`), true)
+
+            window.addEventListener('mouseout', (e) => console.log(`window冒泡到了mouseout`), false)
+            document.documentElement.addEventListener('mouseout', (e) => console.log(`html冒泡到了mouseout`), false)
+            document.body.addEventListener('mouseout', (e) => console.log(`body冒泡到了mouseout`), false)
+            document.getElementById('div1').addEventListener('mouseout', (e) => console.log(`div1冒泡到了mouseout`), false)
+            document.getElementById('div1-1').addEventListener('mouseout', (e) => console.log(`div1-1冒泡到了mouseout`), false)
+            document.getElementById('div1-1-1').addEventListener('mouseout', (e) => console.log(`div1-1-1冒泡到了mouseout`), false)
+        </script>
+        <!-- <script>
+            window.addEventListener('mouseleave', (e) => console.log(`window捕获到了mouseleave`), true)
+            document.documentElement.addEventListener('mouseleave', (e) => console.log(`html捕获到了mouseleave`), true)
+            document.body.addEventListener('mouseleave', (e) => console.log(`body捕获到了mouseleave`), true)
+            document.getElementById('div1').addEventListener('mouseleave', (e) => console.log(`div1捕获到了mouseleave`), true)
+            document.getElementById('div1-1').addEventListener('mouseleave', (e) => console.log(`div1-1捕获到了mouseleave`), true)
+            document.getElementById('div1-1-1').addEventListener('mouseleave', (e) => console.log(`div1-1-1捕获到了mouseleave`), true)
+
+            window.addEventListener('mouseleave', (e) => console.log(`window冒泡到了mouseleave`), false)
+            document.documentElement.addEventListener('mouseleave', (e) => console.log(`html冒泡到了mouseleave`), false)
+            document.body.addEventListener('mouseleave', (e) => console.log(`body冒泡到了mouseleave`), false)
+            document.getElementById('div1').addEventListener('mouseleave', (e) => console.log(`div1冒泡到了mouseleave`), false)
+            document.getElementById('div1-1').addEventListener('mouseleave', (e) => console.log(`div1-1冒泡到了mouseleave`), false)
+            document.getElementById('div1-1-1').addEventListener('mouseleave', (e) => console.log(`div1-1-1冒泡到了mouseleave`), false)
+        </script> -->
+    </body>
+
+</html>

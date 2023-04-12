@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Touch事件注意事项</title>
+        <style>
+            .box {
+                width: 200px;
+                height: 200px;
+                background-color: #0f0;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="box"></div>
+        <!-- Touch事件类型及注意事项 -->
+        <!-- NOTE: 无论在移动端还是PC端，鼠标mouse事件都会触发，但是touch事件只会在移动端触发 -->
+        <script>
+            const box = document.querySelector('.box');
+
+            box.addEventListener('touchstart', (evt) => console.log(evt));
+            // NOTE: 如果在”.box“元素内部开始触摸，在结束触摸前触摸点已经移动到了元素外部，这时仍然会持续触发touchmove事件
+            // NOTE: 而mousemove事件不会这样
+            box.addEventListener('touchmove', (evt) => console.log(evt));
+            box.addEventListener('touchend', (evt) => console.log(evt));
+            // NOTE: 触摸过程中因为弹框、来电等原因中断了触摸，会引发touchcancel事件
+            // NOTE: 此时不会再引发touchend事件，所以touchend和touchcancel事件处理函数通常要处理相同的业务逻辑
+            box.addEventListener('touchcancel', (evt) => console.log(evt));
+
+            box.addEventListener('click', (evt) => console.log(evt));
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>阻止默认行为</title>
+        <style>
+            .box {
+                width: 200px;
+                height: 200px;
+                background-color: #0f0;
+                /* background-image: url(../images/logo.png); */
+                display: block;
+            }
+
+            /* NOTE: 阻止默认行为方式二：在恰当位置调用preventDefault方法 */
+            /* NOTE: 这种方式不阻止mouse事件和click事件 */
+            .box {
+                /* touch-action: cross-slide-x;
+                touch-action: cross-slide-y;
+                touch-action: double-tap-zoom; */
+                /* NOTE:等价于pan-x pan-y pinch-zoom，移除双击缩放，取消click300毫秒延时 */
+                /* touch-action: manipulation; */
+                /* touch-action: none; */
+                /* 单指水平平移 */
+                /* touch-action: pan-x;
+                touch-action: pan-y; */
+                /* 多指平移和缩放 */
+                /* NOTE: 最佳实践 */
+                touch-action: pinch-zoom;
+                /* touch-action: pan-x pan-y; */
+
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <!-- <div class="box">
+            <img src="../images/logo.png" alt="">
+        </div> -->
+        <img src="../images/logo.png" alt="" class="box">
+        <!-- Touch事件类型及注意事项 -->
+        <!-- NOTE: 无论在移动端还是PC端，鼠标mouse事件都会触发，但是touch事件只会在移动端触发 -->
+        <script>
+            // const box = document.querySelector('.box');
+
+            // box.addEventListener('touchstart', (evt) => console.log(evt));
+            // // NOTE: 如果在”.box“元素内部开始触摸，在结束触摸前触摸点已经移动到了元素外部，这时仍然会持续触发touchmove事件
+            // // NOTE: 而mousemove事件不会这样
+            // box.addEventListener('touchmove', (evt) => console.log(evt));
+            // box.addEventListener('touchend', (evt) => console.log(evt));
+            // // NOTE: 触摸过程中因为弹框、来电等原因中断了触摸，会引发touchcancel事件
+            // // NOTE: 此时不会再引发touchend事件，所以touchend和touchcancel事件处理函数通常要处理相同的业务逻辑
+            // box.addEventListener('touchcancel', (evt) => console.log(evt));
+
+            // box.addEventListener('click', (evt) => console.log(evt));
+        </script>
+        <script src="./console-clear.js"></script>
+        <script>
+            const box = document.querySelector('.box');
+            // NOTE: 阻止默认行为方式一：在恰当位置调用preventDefault方法
+            box.addEventListener('touchstart', (evt) =>
+            {
+                // NOTE: 这样阻止掉了一下默认行为：
+                // 1、双击缩放
+                // 2、双指持续缩放
+                // 3、移动端点击时触发鼠标的点击相关的事件
+                // 4、触发click
+                // 5、touchmove的默认元素晃动行为
+                // NOTE: 这样，不在引发mouse事件和click事件了，也不能缩放和晃动元素了（阻止了mousemove的默认行为）
+                // evt.preventDefault();
+                console.log(evt.type);
+            });
+            box.addEventListener('touchmove', (evt) =>
+            {
+                // NOTE: 这样只是阻止了touchmove事件自己的默认行为，不会阻止mouse\click事件的触发
+                // NOTE: 不加这一句，pointer事件表现异常，在元素内部移动且还未移出元素时（可能是因为元素晃动导致指针失焦）
+                // NOTE: 就触发了pointerup/out/leave等事件，使得其后即使
+                // NOTE: 继续在元素内部touch，也不会再触发pointer的事件
+                // evt.preventDefault();
+                console.log(evt.type);
+            });
+            box.addEventListener('touchend', (evt) =>
+            {
+                // 和在touchstart事件中调用一样，除了不阻止mousemove的默认行为
+                // evt.preventDefault();
+                console.log(evt.type);
+            });
+
+
+
+            box.addEventListener('mouseenter', (evt) =>
+            {
+                // evt.preventDefault();
+                // evt.stopPropagation();
+                console.log(evt?.type)
+            });
+            // 在移动端按下触摸点移动手指，不会触发mouse事件，只有立马抬起时才能触发。。。
+            box.addEventListener('mouseover', (evt) => console.log(evt?.type));
+            box.addEventListener('mousemove', (evt) => console.log(evt?.type));
+            box.addEventListener('mouseleave', (evt) => console.log(evt?.type));
+            box.addEventListener('mouseout', (evt) => console.log(evt?.type));
+            box.addEventListener('mousedown', (evt) => console.log(evt?.type));
+            box.addEventListener('mouseup', (evt) => console.log(evt?.type));
+            box.addEventListener('mousewheel', (evt) => console.log(evt?.type));
+
+            box.addEventListener('pointerenter', (evt) => console.log(evt?.type));
+            box.addEventListener('pointerover', (evt) => console.log(evt?.type));
+            box.addEventListener('pointermove', (evt) => console.log(evt?.type));
+            box.addEventListener('pointerleave', (evt) => console.log(evt?.type));
+            box.addEventListener('pointerout', (evt) => console.log(evt?.type));
+            box.addEventListener('pointerdown', (evt) =>
+            {
+                // 和mouse事件处理函数中一样，也不能阻止移动端的默认行为，但是可以阻止pc端的默认行为，
+                // NOTE：例如将box内容中的一张图片拖到浏览器地址栏打开,或拖到其他地方
+                // NOTE: 如果box自身是一张图片也可以阻止掉
+                evt.preventDefault()
+                console.log(evt?.type)
+            });
+            box.addEventListener('pointerup', (evt) => console.log(evt?.type));
+            // box.addEventListener('pointerwheel', (evt) => console.log(evt?.type));
+            box.addEventListener('pointercancel', (evt) => console.log(evt?.type));
+
+            box.addEventListener('click', (evt) => console.log(evt?.type));
+        </script>
+    </body>
+
+</html>

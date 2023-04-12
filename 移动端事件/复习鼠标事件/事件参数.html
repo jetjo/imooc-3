@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>事件参数</title>
+        <script>
+            window.addEventListener('keydown', (e) =>
+            {
+                // 如果是回退键，则清空控制台
+                if (e?.keyCode === 8)
+                {
+                    console.clear();
+                }
+            })
+        </script>
+        <style>
+            div {
+                border: 1px solid #000;
+                padding: 100px;
+                margin: 0 auto;
+            }
+
+            #div1 {
+                width: 500px;
+                height: 500px;
+                overflow: auto;
+            }
+
+            #div1-1 {
+                width: 1000px;
+                height: 1000px;
+            }
+
+            body {
+                height: 1000vh;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <p><mark>按回退键清空控制台！页面失焦时无效！</mark></p>
+
+        事件对象的各种属性值（除了currentTarget等之外）和哪个元素的绑定事件处理函数处理无关，只和事件源元素有关
+        <div>
+            <img src="./currentTarget.png" alt="" width="50%">
+        </div>
+
+        <ul>
+            <li>clientX/Y: 事件触发的位置相对于viewport的位置</li>
+            <li>pageX/Y: 事件触发的位置相对于html根元素的位置，如果html内容区可滚动，那么滚动会影响此位置</li>
+            <li>offsetX/Y: 事件触发的位置相对于事件源元素的位置，如果事件源元素内容区可滚动，那么滚动会影响此位置</li>
+            <li>x/y: clientX/Y的别名</li>
+        </ul>
+
+        <div id="div1">
+            <div id="div1-1">
+                <div id="div1-1-1">我是大飞！！！</div>
+            </div>
+        </div>
+
+        <script>
+            // window.addEventListener('mouseover', (e) => console.log(`window捕获到了mouseover`), true)
+            // document.documentElement.addEventListener('mouseover', (e) => console.log(`html捕获到了mouseover`), true)
+            // document.body.addEventListener('mouseover', (e) => console.log(`body捕获到了mouseover`), true)
+            // document.getElementById('div1').addEventListener('mouseover', (e) => console.log(`div1捕获到了mouseover`), true)
+            // document.getElementById('div1-1').addEventListener('mouseover', (e) => console.log(`div1-1捕获到了mouseover`), true)
+            // document.getElementById('div1-1-1').addEventListener('mouseover', (e) => console.log(`div1-1-1捕获到了mouseover`), true)
+
+            window.addEventListener('mouseover', (e) => console.log(`window冒泡了mouseover, ${ e.clientX }, ${ e.clientY }, ${ e.offsetX }, ${ e.offsetY }, ${ e.pageX }, ${ e.pageY }`, e), false)
+            document.documentElement.addEventListener('mouseover', (e) => console.log(`html冒泡了mouseover, ${ e.clientX }, ${ e.clientY }, ${ e.offsetX }, ${ e.offsetY }, ${ e.pageX }, ${ e.pageY }`, e), false)
+            document.body.addEventListener('mouseover', (e) => console.log(`body冒泡了mouseover, ${ e.clientX }, ${ e.clientY }, ${ e.offsetX }, ${ e.offsetY }, ${ e.pageX }, ${ e.pageY }`, e), false)
+            document.getElementById('div1').addEventListener('mouseover', (e) => console.log(`div1冒泡了mouseover, ${ e.clientX }, ${ e.clientY }, ${ e.offsetX }, ${ e.offsetY }, ${ e.pageX }, ${ e.pageY }`, e), false)
+            document.getElementById('div1-1').addEventListener('mouseover', (e) => console.log(`div1-1冒泡了mouseover, ${ e.clientX }, ${ e.clientY }, ${ e.offsetX }, ${ e.offsetY }, ${ e.pageX }, ${ e.pageY }`, e), false)
+            document.getElementById('div1-1-1').addEventListener('mouseover', (e) => console.log(`div1-1-1冒泡了mouseover, ${ e.clientX }, ${ e.clientY }, ${ e.offsetX }, ${ e.offsetY }, ${ e.pageX }, ${ e.pageY }`, e), false)
+        </script>
+        <script>
+            window.addEventListener('mouseenter', (e) => console.log(`window捕获了mouseenter, ${ e.clientX }, ${ e.clientY }, ${ e.offsetX }, ${ e.offsetY }, ${ e.pageX }, ${ e.pageY }`, e), true)
+            document.documentElement.addEventListener('mouseenter', (e) => console.log(`html捕获了mouseenter, ${ e.clientX }, ${ e.clientY }, ${ e.offsetX }, ${ e.offsetY }, ${ e.pageX }, ${ e.pageY }`, e), true)
+            document.body.addEventListener('mouseenter', (e) => console.log(`body捕获了mouseenter, ${ e.clientX }, ${ e.clientY }, ${ e.offsetX }, ${ e.offsetY }, ${ e.pageX }, ${ e.pageY }`, e), true)
+            document.getElementById('div1').addEventListener('mouseenter', (e) => console.log(`div1捕获了mouseenter, ${ e.clientX }, ${ e.clientY }, ${ e.offsetX }, ${ e.offsetY }, ${ e.pageX }, ${ e.pageY }`, e), true)
+            document.getElementById('div1-1').addEventListener('mouseenter', (e) => console.log(`div1-1捕获了mouseenter, ${ e.clientX }, ${ e.clientY }, ${ e.offsetX }, ${ e.offsetY }, ${ e.pageX }, ${ e.pageY }`, e), true)
+            document.getElementById('div1-1-1').addEventListener('mouseenter', (e) => console.log(`div1-1-1捕获了mouseenter, ${ e.clientX }, ${ e.clientY }, ${ e.offsetX }, ${ e.offsetY }, ${ e.pageX }, ${ e.pageY }`, e), true)
+
+            // window.addEventListener('mouseenter', (e) => console.log(`window冒泡到了mouseenter`), false)
+            // document.documentElement.addEventListener('mouseenter', (e) => console.log(`html冒泡到了mouseenter`), false)
+            // document.body.addEventListener('mouseenter', (e) => console.log(`body冒泡到了mouseenter`), false)
+            // document.getElementById('div1').addEventListener('mouseenter', (e) => console.log(`div1冒泡到了mouseenter`), false)
+            // document.getElementById('div1-1').addEventListener('mouseenter', (e) => console.log(`div1-1冒泡到了mouseenter`), false)
+            // document.getElementById('div1-1-1').addEventListener('mouseenter', (e) => console.log(`div1-1-1冒泡到了mouseenter`), false)
+        </script>
+    </body>
+
+</html>

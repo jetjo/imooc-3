@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mouseenter 和 Mouseover 事件</title>
+        <script>
+            window.addEventListener('keydown', (e) =>
+            {
+                // 如果是回退键，则清空控制台
+                if (e?.keyCode === 8)
+                {
+                    console.clear();
+                }
+            })
+        </script>
+        <style>
+            div {
+                border: 1px solid #000;
+                padding: 100px;
+                margin: 0 auto;
+            }
+
+            #div1 {
+                width: 500px;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <p><mark>按回退键清空控制台！页面失焦时无效！</mark></p>
+
+        Mouseenter和mouseover事件都象征着鼠标位于一个元素内部了，但是其有如下区别：
+        <ul>
+            <li>Mouseenter在进入元素时触发一次，从子元素内部回来不会触发；</li>
+            <!-- <li>Mouseover会持续触发，只要还在元素或子元素内部</li> -->
+            <li>Mouseover在进入元素时触发一次，从子元素回来后又会触发一次；在元素上移动或不动不会触发，不会持续触发！！！！！！</li>
+            <li>Mouseenter只会捕获，冒泡只发生在元素自身</li>
+            <li>Mouseover即会冒泡也会捕获，会冒泡到根元素或者冒泡的被stopPropagation()为止，也会从根元素一直捕获到所触发的元素，所以Mouseover可以用于事件委托。</li>
+        </ul>
+
+        <div id="div1">
+            <div id="div1-1">
+                <div id="div1-1-1">我是大飞！！！</div>
+            </div>
+        </div>
+
+        <!-- <script>
+            window.addEventListener('mouseover', (e) => console.log(`window捕获到了mouseover`), true)
+            document.documentElement.addEventListener('mouseover', (e) => console.log(`html捕获到了mouseover`), true)
+            document.body.addEventListener('mouseover', (e) => console.log(`body捕获到了mouseover`), true)
+            document.getElementById('div1').addEventListener('mouseover', (e) => console.log(`div1捕获到了mouseover`), true)
+            document.getElementById('div1-1').addEventListener('mouseover', (e) => console.log(`div1-1捕获到了mouseover`), true)
+            document.getElementById('div1-1-1').addEventListener('mouseover', (e) => console.log(`div1-1-1捕获到了mouseover`), true)
+
+            window.addEventListener('mouseover', (e) => console.log(`window冒泡到了mouseover`), false)
+            document.documentElement.addEventListener('mouseover', (e) => console.log(`html冒泡到了mouseover`), false)
+            document.body.addEventListener('mouseover', (e) => console.log(`body冒泡到了mouseover`), false)
+            document.getElementById('div1').addEventListener('mouseover', (e) => console.log(`div1冒泡到了mouseover`), false)
+            document.getElementById('div1-1').addEventListener('mouseover', (e) => console.log(`div1-1冒泡到了mouseover`), false)
+            document.getElementById('div1-1-1').addEventListener('mouseover', (e) => console.log(`div1-1-1冒泡到了mouseover`), false)
+        </script> -->
+        <script>
+            window.addEventListener('mouseenter', (e) => console.log(`window捕获到了mouseenter`), true)
+            document.documentElement.addEventListener('mouseenter', (e) => console.log(`html捕获到了mouseenter`), true)
+            document.body.addEventListener('mouseenter', (e) => console.log(`body捕获到了mouseenter`), true)
+            document.getElementById('div1').addEventListener('mouseenter', (e) => console.log(`div1捕获到了mouseenter`), true)
+            document.getElementById('div1-1').addEventListener('mouseenter', (e) => console.log(`div1-1捕获到了mouseenter`), true)
+            document.getElementById('div1-1-1').addEventListener('mouseenter', (e) => console.log(`div1-1-1捕获到了mouseenter`), true)
+
+            window.addEventListener('mouseenter', (e) => console.log(`window冒泡到了mouseenter`), false)
+            document.documentElement.addEventListener('mouseenter', (e) => console.log(`html冒泡到了mouseenter`), false)
+            document.body.addEventListener('mouseenter', (e) => console.log(`body冒泡到了mouseenter`), false)
+            document.getElementById('div1').addEventListener('mouseenter', (e) => console.log(`div1冒泡到了mouseenter`), false)
+            document.getElementById('div1-1').addEventListener('mouseenter', (e) => console.log(`div1-1冒泡到了mouseenter`), false)
+            document.getElementById('div1-1-1').addEventListener('mouseenter', (e) => console.log(`div1-1-1冒泡到了mouseenter`), false)
+        </script>
+    </body>
+
+</html>
