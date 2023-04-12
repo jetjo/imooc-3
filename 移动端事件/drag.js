@@ -151,6 +151,7 @@ function drag(el)//: HTMLElement)
     startPos.y = pageY;
     startPos.touchId = pointerId;
     console.log(startPos);
+    // NOTE： 因为在PC端，指针移出元素后pointermove事件不在分发给元素，所以不能在el元素上绑定pointermove事件监听，可以在window或document上
     window.addEventListener('pointermove', moveHandler);
     window.addEventListener('pointerup', endHandler);
     window.addEventListener('pointercancel', endHandler);
@@ -175,6 +176,7 @@ function drag(el)//: HTMLElement)
     // NOTE: 防止下次开始拖拽前回弹
     curPos.x = movingPos.x;
     curPos.y = movingPos.y;
+    // NOTE： 因为这些事件在每次pointerdown时都会绑定一次，为了防止重复多次绑定，对应的在这儿也要清除
     window.removeEventListener('pointermove', moveHandler);
     window.removeEventListener('pointerup', endHandler);
     window.removeEventListener('pointercancel', endHandler);
