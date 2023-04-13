@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + Vue</title>
+    <style>
+      div {
+        text-align: left !important;
+      }
+
+      .box-item {
+        border: 3px solid gold;
+        margin: 10px 0;
+      }
+
+      .box-item h3 {
+        background-color: yellow;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <!-- 绑在#app上的事件无效, 因为#app自身不是根组件的一部分，其内部才是根组件，所以绑定属性也无效 -->
+    <div id="app" @click="triggerUpdate" :data-msg="msg">
+      <!-- <div> -->
+      <button @click="triggerUpdate" :data-msg="msg">触发更新</button>
+      <button @click="triggerUnmount">触发卸载</button>
+      <figure style="text-align: left;">
+        <figcaption>驼峰格式不支持</figcaption>
+        如果根组件没有定义模版，假设调用app.mount()方法时传递的参数是“#app”,那么就会把#app的innerHTML作为模版编译。
+        <pre>
+        &lt;!-- 
+          &lt;HelloWorld msg="V + V" />
+          警告：[Vue warn]: 
+          Failed to resolve component: helloworld
+          If this is a native custom element, 
+          make sure to exclude it from component resolution via 
+          compilerOptions.isCustomElement. 
+        -->
+        </pre>
+      </figure>
+      <!-- <hello-world msg="hello world"></hello-world> -->
+      <dynamic-com></dynamic-com>
+      <async-com></async-com>
+      <custom-directive></custom-directive>
+      <!-- </div> -->
+      <!-- {{msg}} -->
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+
+</html>
