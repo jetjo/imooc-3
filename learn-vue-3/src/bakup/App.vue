@@ -111,7 +111,7 @@ import refLearn from "../响应性原理复习/ref解构.vue";
 import teleport1 from "../teleport1.vue";
 import toRefsLearn from "../响应性原理复习/toRefs解构.vue";
 import toRefLearn from "../响应性原理复习/toRef解构.vue";
-import computedLearn from "../响应性原理复习/computed计算属性.vue";
+import computedLearn from "../响应性原理复习/computed计算属性/index.vue";
 
 import watchLearn from "../响应性原理复习/watch和watcheffect.vue";
 

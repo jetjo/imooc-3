@@ -48,21 +48,28 @@ const girl = reactive({
 });
 const price = computed({
   get() {
+    console.log("计算属性get 1");
     return girl.price.once; //如果girl不具备响应性，则当girl.price.once发生变化时，computed price get属性值不再变化
     // return girl.value.price.once;
   },
   set(value) {
+    console.log("计算属性set 1");
     girl.price = {
       // girl.value.price = {
       once: value,
       oneNight: value * 3 - value / 3,
     };
+    console.log("计算属性set 2");
   },
 });
 
 watch(girl, () => alert("girl的价格变化了"));
 
-const handleClick = () => (price.value = priceOnce.value); //, proxy.$forceUpdate()
+const handleClick = () => {
+  console.log("handleClick 1", price);
+  price.value = priceOnce.value;
+  console.log("handleClick 2", price);
+}; //, proxy.$forceUpdate()
 </script>
 
 <style lang="scss" scoped></style>
