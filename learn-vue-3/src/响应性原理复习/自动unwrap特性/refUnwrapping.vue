@@ -25,19 +25,33 @@
 import { reactive, ref, onUpdated } from "vue";
 let refObj = ref({ name: "", age: 18 });
 let count = ref(1);
-const countRefObj = ref({ count });
+const countRefObj = ref({ count, 0: count, length: 1 });
 const countRefArray = ref([count]);
 const countRefMap = ref(new Map([["count", count]]));
 const obj = ref({ count, countRefObj, countRefArray, countRefMap });
 const updateObjCount = () => obj.value.count++;
 onUpdated(() =>
-  console.log({ obj, countRefObj, count, refObj }, "reactiveUnwrap")
+  console.log(
+    { obj, countRefArray, countRefMap, countRefObj, count, refObj },
+    "reactiveUnwrap"
+  )
 );
 
 const updateObjCount1 = () => obj.value.countRefObj.count++;
 // const updateObjCount2 = () => obj.value.countRefArray[0]++; //通过原生类型比如数组的索引或者Map的get(key)获取到的ref不会自动添加.value
 const updateObjCount2 = () => obj.value.countRefArray[0].value++;
 const updateObjCount3 = () => obj.value.countRefMap.get("count").value++;
+
+console.log(countRefObj.value.count); //被转换成了countRefObj.value.count.value
+console.log(typeof countRefObj.value.count); //
+console.log(countRefObj.value[0]); //被转换成了countRefObj.value.count.value
+console.log(typeof countRefObj.value[0]); //
+console.log(countRefArray.value[0]); //没被自动加.value
+console.log(typeof countRefArray.value[0]); //
+// console.log(countRefArray.value.0); //没被自动加.value
+// console.log(typeof countRefArray.value.'0'); //
+console.log(countRefMap.value.get("count")); //没被自动加.value
+console.log(typeof countRefMap.value.get("count")); //
 </script>
 
 <style lang="scss" scoped></style>
