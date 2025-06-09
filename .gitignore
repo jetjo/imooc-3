@@ -1,12 +1,5 @@
+# 这里的配置会不经意干扰子目录,没必要在这里配置...
 .DS_Store
-icons/
-images/
-rem+vw布局/课件资料/
-流体布局/课件资料/
-Flex 弹性布局/课件资料/
-grid布局/课件资料/
-响应式布局/课件资料/
-sass-学习/**/*.css
-sass-学习/**/*.css.map
-.yarn/
 **/node_modules/
+**/.yarn/
+**/课件资料/

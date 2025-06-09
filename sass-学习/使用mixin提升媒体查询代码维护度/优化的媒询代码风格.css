@@ -1,0 +1,36 @@
+@charset "UTF-8";
+.header {
+  width: 1000px;
+  border-width: 1px;
+}
+@media screen and (min-width: 768px) {
+  .header {
+    width: 500px;
+    height: 300px;
+    border-color: white;
+  }
+}
+
+.footer {
+  color: blue;
+  border-width: 1px;
+}
+@media screen and (min-width: 768px) {
+  .footer {
+    color: red;
+    border-color: red;
+  }
+}
+
+/* .... 若干媒询....*/
+/* .... 若干媒询....*/
+/* .... 若干媒询....*/
+/* .... 若干媒询....*/
+/* .... 若干媒询....*/
+/* .... 若干媒询....*/
+/* .... 若干媒询....*/
+/* .... 若干媒询....*/
+/* .... 若干媒询....*/
+/* .... 若干媒询....*/
+/* .... 若干媒询....*/
+/* .... 若干媒询....*//*# sourceMappingURL=优化的媒询代码风格.css.map */

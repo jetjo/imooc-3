@@ -1,0 +1,6 @@
+.header span {
+  color: red;
+}
+.header span.active {
+  color: greenyellow;
+}/*# sourceMappingURL=demo.css.map */

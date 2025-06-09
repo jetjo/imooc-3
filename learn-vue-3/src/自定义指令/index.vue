@@ -9,11 +9,11 @@
 </template>
 
 <script setup>
-import directiveDefReg from "./指令的定义与注册.vue";
-import directiveHook from "./指令钩子.vue";
-import directiveHookArgs from "./指令钩子传参.vue";
-import directiveHookArgMean from "./指令钩子参数们的含义.vue";
-import directiveHookElDataSet from "./指令钩子间使用el.dataset传递信息.vue";
+// import directiveDefReg from "./指令的定义与注册.vue";
+// import directiveHook from "./指令钩子.vue";
+// import directiveHookArgMean from "./指令钩子参数们的含义.vue";
+// import directiveHookArgs from "./指令钩子传参.vue";
+// import directiveHookElDataSet from "./指令钩子间使用el.dataset传递信息.vue";
 </script>
 
 <style lang="scss" scoped>
