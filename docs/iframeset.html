@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可调整左右屏宽度占比的iframe</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* Prevent scrollbars on body */
+            font-family: sans-serif;
+        }
+        .whole-screen {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            align-items: stretch; /* Ensure child elements stretch to full height */
+        }
+        .left-screen, .right-screen {
+            height: 100%; /* Occupy full height of parent .whole-screen */
+            overflow: hidden; /* Contain the iframe */
+            position: relative; /* For potential future positioned elements within panes */
+        }
+        .left-screen {
+            flex-basis: 50%; /* Initial width */
+            min-width: 50px; /* Optional: minimum width for the left pane */
+        }
+        .right-screen {
+            flex-grow: 1; /* Takes remaining space */
+            min-width: 50px; /* Optional: minimum width for the right pane */
+        }
+        .divider {
+            width: 10px; /* This is the draggable area, 10px wide */
+            background-color: #e0e0e0; /* Light gray color for visibility */
+            cursor: col-resize; /* Cursor indicates draggable */
+            flex-shrink: 0; /* Prevent divider from shrinking */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* z-index: 10; /* Generally not needed if overlay is used correctly */
+        }
+        .divider::before { /* Optional: add some visual grip dots */
+            content: '⋮';
+            font-size: 12px;
+            color: #666;
+            line-height: 0;
+        }
+        iframe {
+            width: 100%;
+            height: 100%; /* Fill parent div (.left-screen or .right-screen) */
+            border: none;
+            display: block; /* Remove extra space below iframe if it's an inline element */
+        }
+        .drag-overlay {
+            position: fixed; /* Cover the entire viewport */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999; /* Highest z-index to cover everything including iframes */
+            cursor: col-resize; /* Maintain resize cursor during drag */
+            display: none; /* Hidden by default, shown only during drag */
+            /* background-color: rgba(0,0,0,0.01); /* For debugging, make it slightly visible */
+        }
+    </style>
+</head>
+<body>
+    <div class="whole-screen">
+        <div class="left-screen">
+            <iframe name="left-iframe" src="https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&amp;layer=mapnik"></iframe>
+        </div>
+        <div class="divider" id="divider"></div>
+        <div class="right-screen">
+            <iframe name="right-iframe" src="about:blank"></iframe>
+        </div>
+    </div>
+    <div class="drag-overlay" id="dragOverlay"></div>
+
+    <script>
+        const divider = document.getElementById('divider');
+        const leftScreen = document.querySelector('.left-screen');
+        const wholeScreen = document.querySelector('.whole-screen'); // Parent container
+        const dragOverlay = document.getElementById('dragOverlay');
+
+        let isDragging = false;
+        let startX_drag, startLeftWidth_drag;
+
+        divider.addEventListener('mousedown', (e) => {
+            // Prevent default actions like text selection, especially important if divider has text/icons
+            e.preventDefault();
+
+            isDragging = true;
+            startX_drag = e.clientX; // Mouse X position at the start of drag
+            startLeftWidth_drag = leftScreen.offsetWidth; // Initial width of the left pane
+
+            dragOverlay.style.display = 'block'; // Show the overlay
+
+            // Add event listeners to the document to capture mouse move and up events
+            // This ensures dragging continues even if the mouse moves outside the divider
+            document.addEventListener('mousemove', handleDragMouseMove);
+            document.addEventListener('mouseup', handleDragMouseUp);
+        });
+
+        function handleDragMouseMove(e) {
+            if (!isDragging) return;
+
+            const deltaX = e.clientX - startX_drag; // How much the mouse has moved
+            let newLeftWidth = startLeftWidth_drag + deltaX;
+
+            // Constraints to prevent panes from becoming too small or too large
+            const minPaneWidth = 50; // Minimum width for any pane in pixels
+            const containerWidth = wholeScreen.offsetWidth;
+            const dividerWidth = divider.offsetWidth;
+
+            // Ensure left pane doesn't get too small
+            if (newLeftWidth < minPaneWidth) {
+                newLeftWidth = minPaneWidth;
+            }
+            // Ensure right pane doesn't get too small (container width - divider - min right pane width)
+            if (newLeftWidth > containerWidth - dividerWidth - minPaneWidth) {
+                newLeftWidth = containerWidth - dividerWidth - minPaneWidth;
+            }
+
+            leftScreen.style.flexBasis = newLeftWidth + 'px';
+            // The right screen's width will adjust automatically due to its flex-grow: 1 property.
+        }
+
+        function handleDragMouseUp() {
+            if (!isDragging) return;
+
+            isDragging = false;
+            dragOverlay.style.display = 'none'; // Hide the overlay
+
+            // Remove the global event listeners
+            document.removeEventListener('mousemove', handleDragMouseMove);
+            document.removeEventListener('mouseup', handleDragMouseUp);
+        }
+    </script>
+</body>
+</html>
